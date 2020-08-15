@@ -18,6 +18,6 @@ class HttpError extends Error {
   }
 }
 
-const createError = ({ message, details } = {}) => ({ message, details });
+const createError = (message, { details } = {}) => ({ message, details });
 
 module.exports = { HttpError, createError };

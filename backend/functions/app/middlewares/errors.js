@@ -12,7 +12,7 @@ const handleErrors = (err, req, res, next) => {
       : new HttpError({
           status: 500,
           name: err.name,
-          errors: [createError({ message: err.message })],
+          errors: [createError(err.message)],
         });
   res
     .status(response.status)

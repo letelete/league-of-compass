@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
-router.use('/', (req, res, next) => {
-  res.status(200).send({ message: 'Hello World! 🌍' });
-});
+const championsRouter = require('./champions');
+
+router.use('/champions', championsRouter);
 
 module.exports = router;
