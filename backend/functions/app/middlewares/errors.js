@@ -14,10 +14,7 @@ const handleErrors = (err, req, res, next) => {
           name: err.name,
           errors: [createError(err.message)],
         });
-  res
-    .status(response.status)
-    .set(response.headers)
-    .send({ errors: response.errors });
+  res.status(response.status).set(response.headers).send(response.data);
 };
 
 module.exports = {

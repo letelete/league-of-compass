@@ -13,7 +13,9 @@ class HttpError extends Error {
     this.response = {
       status: status || defaultStatus,
       headers: { ...defaultHeaders, ...headers },
-      errors: errors || [defaultError],
+      data: {
+        errors: errors || [defaultError],
+      },
     };
   }
 }

@@ -11,22 +11,22 @@ class BadRequestError extends HttpError {
   }
 }
 
-class UnauthenticatedError extends HttpError {
+class UnauthorizedError extends HttpError {
   constructor(errors, { headers } = {}) {
     super({
       status: 401,
-      name: 'Unauthenticated',
+      name: 'Unauthorized',
       headers,
       errors,
     });
   }
 }
 
-class UnauthorizedError extends HttpError {
+class ForbiddenError extends HttpError {
   constructor(errors, { headers } = {}) {
     super({
       status: 403,
-      name: 'Unauthorized',
+      name: 'Forbidden',
       headers,
       errors,
     });
@@ -57,8 +57,8 @@ class TooManyRequestsError extends HttpError {
 
 module.exports = {
   BadRequestError,
-  UnauthenticatedError,
   UnauthorizedError,
+  ForbiddenError,
   NotFoundError,
   TooManyRequestsError,
 };

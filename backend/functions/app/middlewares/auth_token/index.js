@@ -1,7 +1,7 @@
 const validate = require('./validation');
 const axios = require('axios');
 const { createError } = require('../../errors/http_error');
-const { UnauthenticatedError } = require('../../errors/4xx');
+const { UnauthorizedError } = require('../../errors/4xx');
 
 const verifyGoogleAuthToken = async (req, res, next) => {
   validate.verifyGoogleTokenRequest(req);
@@ -19,7 +19,7 @@ const verifyGoogleAuthToken = async (req, res, next) => {
     .catch((err) => {
       if (err.response) {
         const errors = [createError('Invalid Google ID token')];
-        throw new UnauthenticatedError(errors);
+        throw new UnauthorizedError(errors);
       }
       throw err;
     });
