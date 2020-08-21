@@ -44,7 +44,7 @@ const validate = {
 
 const handleErrors = (errors) => {
   if (errors.length) {
-    throw new BadRequestError({ errors });
+    throw new BadRequestError(errors);
   }
 };
 
