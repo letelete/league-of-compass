@@ -3,15 +3,12 @@ const { BadRequestError } = require('../../errors/4xx');
 const { createError } = require('../../errors/http_error');
 const validate = require('./validation');
 const sanitize = require('./sanitization');
-const { pipe } = require('lodash/fp');
 const database = require('../../configs/firebase');
 const DocumentIdPagination = require('../../helpers/firebase_pagination');
 
 const getAll = async (req, res) => {
-  const { search, sortBy, order, filters, perPage, page } = pipe(
-    validate.all,
-    sanitize.all
-  )(req);
+  validate.all(req);
+  const { search, sortBy, order, filters, perPage, page } = sanitize.all(req);
 
   const ref = () => {
     let base = database.collection('champions');

@@ -1,25 +1,27 @@
 const user = require('../../models/database/user');
 const { createError } = require('../../errors/http_error');
-const { pipe } = require('lodash/fp');
 
 const fetchUserData = async (req, res, next) => {
   const {
     userPayload: { id: userId },
   } = res.locals;
 
-  res.locals.userData = await user.getData(userId);
+  res.locals.userData = await user.doc(userId).getData();
 
   return next();
 };
 
 const createUserIfNoData = async (req, res, next) => {
   const { userPayload, userData } = res.locals;
-  const saveCreatedUser = async (data) => user.setData(userPayload.id, data);
+  const userDocRef = user.doc(userPayload.id);
 
   if (userData) return next();
 
   res.locals.isUserNew = true;
-  res.locals.userData = await pipe(user.create, saveCreatedUser)(userPayload);
+
+  const createdUserData = user.create(userPayload);
+  await userDocRef.setData(createdUserData);
+  res.locals.userData = await userDocRef.getData();
 
   return next();
 };

@@ -12,8 +12,11 @@ const baseUrl = (version) =>
  * @example Vayne.png
  */
 const endpoints = (version) => ({
-  allChampions: (lang = defaultLang) => `${baseUrl(version)}/data/${lang}/champion.json`,
+  allChampions: (lang = defaultLang) =>
+    `${baseUrl(version)}/data/${lang}/champion.json`,
   championAvatar: (filename) => `${baseUrl(version)}/img/champion/${filename}`,
+  championAvatarById: (championId) =>
+    `${baseUrl(version)}/img/champion/${championId}.png`,
 });
 
 module.exports = { endpoints };
