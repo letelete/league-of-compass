@@ -1,4 +1,4 @@
-const champions = require('../../models/database/champions');
+const Champion = require('../../models/database/champion');
 const { BadRequestError } = require('../../errors/4xx');
 const { createError } = require('../../errors/http_error');
 const validate = require('./validation');
@@ -27,7 +27,7 @@ const getAll = async (req, res) => {
 
   const championsData = docs.map((docs) => {
     const data = docs.data();
-    return champions.normalizeForResponse(data);
+    return Champion.format(data).to.response();
   });
 
   res.status(200).send({

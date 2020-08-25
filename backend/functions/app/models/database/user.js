@@ -1,9 +1,63 @@
 const database = require('../../configs/firebase');
-const vote = require('./vote');
-const regions = require('../lol_api/regions');
-const league = require('../lol_api/league');
+const Vote = require('./Vote');
+const Regions = require('../lol_api/regions');
+const League = require('../lol_api/league');
 const { BadRequestError } = require('../../errors/4xx');
 const { createError } = require('../../errors/http_error');
+const yup = require('yup');
+const filterObject = require('../../helpers/object');
+
+const {
+  attachWhenNotEmpty,
+} = require('../../helpers/yup/attach_obj_when_not_empty');
+
+const schema = yup.object().shape({
+  personal: attachWhenNotEmpty({
+    id: yup.string().trim(),
+    name: yup.string().trim(),
+    image: yup.string().url().trim(),
+    email: yup.string().email().trim(),
+  }),
+  game: attachWhenNotEmpty({
+    region: yup
+      .string()
+      .nullable()
+      .uppercase()
+      .trim()
+      .test('Region exists', "Unknown user's game region", (region) =>
+        region ? Regions.data.hasOwnProperty(region) : true
+      ),
+  }),
+  summoner: attachWhenNotEmpty({
+    accountId: yup.string().nullable().trim(),
+    puuid: yup.string().nullable().trim(),
+    name: yup.string().nullable().trim().min(3).max(16),
+    profileIconId: yup.number().nullable(),
+    league: attachWhenNotEmpty({
+      tier: yup
+        .string()
+        .nullable()
+        .uppercase()
+        .trim()
+        .test('Tier exists', "Unknown user's league tier", (tier) =>
+          tier ? League.tiers.hasOwnProperty(tier) : true
+        ),
+      rank: yup.number().nullable().min(1).max(4),
+    }),
+  }),
+});
+
+const validate = (data) => {
+  let validated;
+  try {
+    validated = schema.validateSync(data, { abortEarly: false });
+  } catch (err) {
+    throw new BadRequestError(err.errors);
+  }
+  return validated;
+};
+
+const create = validate;
 
 const doc = (id) => {
   const getData = async () => {
@@ -14,10 +68,9 @@ const doc = (id) => {
   };
 
   const setData = async (data) => {
-    const validated = validate(data);
-    const sanitized = sanitize(validated);
-    await database.doc(userPath()).set(sanitized, { merge: true });
-    return sanitized;
+    const user = validate(data);
+    await database.doc(userPath()).set(user, { merge: true });
+    return user;
   };
 
   const getVotes = async () => {
@@ -29,11 +82,10 @@ const doc = (id) => {
   };
 
   const setVote = async (data) => {
-    const validated = vote.validate(data);
-    const sanitized = vote.sanitize(validated);
-    const path = `${votesPath()}/${sanitized.championId}`;
-    await database.doc(path).set(sanitized, { merge: true });
-    return sanitized;
+    const vote = Vote.validate(data);
+    const path = `${votesPath()}/${vote.championId}`;
+    await database.doc(path).set(vote, { merge: true });
+    return vote;
   };
 
   const getChampionVote = async (championId) => {
@@ -55,233 +107,6 @@ const doc = (id) => {
     setVote,
     getChampionVote,
   });
-};
-
-const create = ({ id, name, image, email }) => {
-  const data = {
-    personal: {
-      id,
-      name,
-      image,
-      email,
-    },
-    game: {
-      region: null,
-    },
-    summoner: {
-      accountId: null,
-      puuid: null,
-      name: null,
-      profileIconId: null,
-      league: {
-        tier: null,
-        rank: null,
-      },
-    },
-  };
-  const validated = validate(data);
-  const sanitized = sanitize(validated);
-  return Object.freeze(sanitized);
-};
-
-const validate = (data) => {
-  const errors = [];
-  const pushError = (msg, details = null) =>
-    errors.push(createError(msg, (details && { details }) || {}));
-
-  if (!data) pushError('Expected user data, but got empty object instead');
-
-  const { personal, game, summoner } = data || {};
-
-  const validateEmptiness = (data, name) => {
-    if (!data) {
-      pushError(
-        'Empty field',
-        `Expected ${name} to have a value, but got an empty object instead`
-      );
-    }
-  };
-
-  const validatePersonal = () => {
-    if (!personal) return;
-
-    if (personal.hasOwnProperty('id')) {
-      validateEmptiness(personal.id, 'ID');
-    }
-    if (personal.hasOwnProperty('name')) {
-      validateEmptiness(personal.name, 'Name');
-    }
-    if (personal.hasOwnProperty('image')) {
-      validateEmptiness(personal.image, 'Image');
-    }
-    if (personal.hasOwnProperty('email')) {
-      validateEmptiness(personal.email, 'Email');
-    }
-  };
-
-  const validateGame = () => {
-    if (!game) return;
-
-    if (game.region && !regions.data.hasOwnProperty(game.region)) {
-      pushError(
-        'Invalid game region',
-        `Expected one of the following: ${Object.keys(regions.data)}`
-      );
-    }
-  };
-
-  const validateSummoner = () => {
-    if (!summoner) return;
-    const { league: sLeague, sProfileIconId } = summoner;
-
-    if (sLeague && sLeague.tier && !league.tiers.hasOwnProperty(sLeague.tier)) {
-      pushError(
-        `Invalid league tier`,
-        `Expected one of the following: ${Object.keys(league.tiers)}`
-      );
-    }
-    if (sLeague && sLeague.rank && isNaN(sLeague.rank)) {
-      pushError(
-        'Invalid type',
-        'Expected rank to be a number, but got NaN instead'
-      );
-    }
-    if (
-      sLeague &&
-      sLeague.rank &&
-      (sLeague.rank > league.rankRange.max ||
-        sLeague.rank < league.rankRange.min)
-    ) {
-      pushError(
-        `Invalid rank value`,
-        `Expected rank to be in range of <${league.rankRange.min}; ${league.rankRange.max}>`
-      );
-    }
-    if (sProfileIconId && isNaN(sProfileIconId)) {
-      pushError(
-        'Invalid type',
-        'Expected profileIconId to be a number, but got NaN instead'
-      );
-    }
-  };
-
-  validatePersonal();
-  validateGame();
-  validateSummoner();
-
-  if (errors.length) {
-    throw new BadRequestError(errors);
-  }
-
-  return data;
-};
-
-const sanitize = (data) => {
-  const { personal, game, summoner } = data;
-
-  const sanitizePersonal = () => {
-    let sanitized = {};
-    if (personal.hasOwnProperty('id')) {
-      sanitized = { ...sanitized, id: personal.id.toString().trim() };
-    }
-    if (personal.hasOwnProperty('name')) {
-      sanitized = { ...sanitized, name: personal.name.toString().trim() };
-    }
-    if (personal.hasOwnProperty('image')) {
-      sanitized = { ...sanitized, image: personal.image.toString().trim() };
-    }
-    if (personal.hasOwnProperty('email')) {
-      sanitized = { ...sanitized, email: personal.email.toString().trim() };
-    }
-    return sanitized;
-  };
-
-  const sanitizeGame = () => {
-    let sanitized = {};
-    if (game.hasOwnProperty('region')) {
-      sanitized = {
-        ...sanitized,
-        region: game.region
-          ? game.region.toString().trim().toUpperCase()
-          : null,
-      };
-    }
-    return sanitized;
-  };
-
-  const sanitizeLeague = () => {
-    let sanitized = {};
-    if (summoner.league.hasOwnProperty('tier')) {
-      sanitized = {
-        ...sanitized,
-        tier: summoner.league.tier
-          ? summoner.league.tier.toString().trim().toUpperCase()
-          : null,
-      };
-    }
-    if (summoner.league.hasOwnProperty('rank')) {
-      sanitized = {
-        ...sanitized,
-        rank: summoner.league.rank ? Number(summoner.league.rank) : null,
-      };
-    }
-    return sanitized;
-  };
-
-  const sanitizeSummoner = () => {
-    let sanitized = {};
-    if (summoner.hasOwnProperty('accountId')) {
-      sanitized = {
-        ...sanitized,
-        accountId: summoner.accountId
-          ? summoner.accountId.toString().trim()
-          : null,
-      };
-    }
-    if (summoner.hasOwnProperty('puuid')) {
-      sanitized = {
-        ...sanitized,
-        puuid: summoner.puuid
-          ? summoner.puuid.toString().trim().toUpperCase()
-          : null,
-      };
-    }
-    if (summoner.hasOwnProperty('name')) {
-      sanitized = {
-        ...sanitized,
-        name: summoner.name ? summoner.name.toString().trim() : null,
-      };
-    }
-    if (summoner.hasOwnProperty('profileIconId')) {
-      sanitized = {
-        ...sanitized,
-        profileIconId: summoner.profileIconId
-          ? Number(summoner.profileIconId)
-          : null,
-      };
-    }
-    if (summoner.hasOwnProperty('league')) {
-      sanitized = {
-        ...sanitized,
-        league: sanitizeLeague(),
-      };
-    }
-    return sanitized;
-  };
-
-  let sanitized = {};
-
-  if (personal) {
-    sanitized = { ...sanitized, personal: sanitizePersonal() };
-  }
-  if (game) {
-    sanitized = { ...sanitized, game: sanitizeGame() };
-  }
-  if (summoner) {
-    sanitized = { ...sanitized, summoner: sanitizeSummoner() };
-  }
-
-  return sanitized;
 };
 
 module.exports = { doc, create, validate };

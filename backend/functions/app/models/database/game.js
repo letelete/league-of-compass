@@ -1,27 +1,13 @@
-const database = require('../../configs/firebase');
+const Database = require('../../configs/firebase');
 
-const getData = async () => {
-  return await database
-    .collection('lol')
-    .doc('data')
-    .get()
-    .then(deserializeData);
-};
+const doc = () => {
+  const getData = async () => ref.get().then(deserializeData);
 
-const setData = async ({ version } = {}) => {
-  const data = { version };
-  return await database
-    .collection('lol')
-    .doc('data')
-    .set(data, { merge: true });
-};
+  const ref = Database.collection('lol').doc('data');
 
-const deserializeData = (response) => {
-  const { version } = response.data();
-  return { version };
+  return Object.freeze({ getData });
 };
 
 module.exports = {
-  getData,
-  setData,
+  doc,
 };

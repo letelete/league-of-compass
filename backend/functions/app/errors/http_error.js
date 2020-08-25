@@ -1,6 +1,6 @@
 class HttpError extends Error {
   constructor({ status, headers, name, errors }) {
-    super(name);
+    super(errors.reduce((msg, next) => `${msg},\n${next}`));
 
     const defaultStatus = 500;
     const defaultHeaders = { 'Content-Type': 'application/json' };

@@ -1,6 +1,5 @@
-const game = require('../app/models/database/game');
-const { getChampions } = require('../app/models/lol_api/champions');
-const { setChampions } = require('../app/models/database/champions');
+const LolApi = require('../app/models/lol_api/champions');
+const Database = require('../app/configs/firebase');
 
 const invalidateGameData = async (change, context) => {
   const before = change.before.data();
@@ -12,10 +11,17 @@ const invalidateGameData = async (change, context) => {
     return null;
   }
 
-  return Promise.all([
-    game.setData({ version: after.version }),
-    getChampions().then(setChampions),
-  ]);
+  const champions = await LolApi.getChampions();
+  return await setChampions(champions);
+};
+
+const setChampions = async (champions) => {
+  const ref = (championId) => Database.collection('champions').doc(championId);
+  const batch = Database.batch();
+  champions.forEach((champion) => {
+    batch.set(ref(champion.id), champion, { merge: true });
+  });
+  return await batch.commit();
 };
 
 module.exports = invalidateGameData;

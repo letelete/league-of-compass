@@ -1,16 +1,14 @@
-const user = require('../../models/database/user');
-const game = require('../../models/database/game');
-const vote = require('../../models/database/vote');
+const User = require('../../models/database/user');
+const Game = require('../../models/database/game');
+const Vote = require('../../models/database/vote');
 const { InternalServerError } = require('../../errors/5xx');
 const { HttpError, createError } = require('../../errors/http_error');
 const { BadRequestError, NotFoundError } = require('../../errors/4xx');
-const filterObject = require('../../helpers/object');
 const { buildObjectFromQuery } = require('../../helpers/query');
-const { query } = require('express');
 
 const validateUser = async (req, res, next) => {
   const { id: userId } = res.locals.userPayload;
-  const userData = await user.doc(userId).getData();
+  const userData = await User.doc(userId).getData();
 
   if (!userData) {
     const error = createError('User not found', {
@@ -30,7 +28,7 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
   const { id: userId } = res.locals.userPayload;
-  const { image, name, region, summoner_name: summonerName } = req.query;
+  const userDocRef = User.doc(userId);
 
   const queryTree = (obj, value) => ({
     image: { personal: { ...obj.personal, image: value } },
@@ -38,33 +36,31 @@ const postUser = async (req, res) => {
     region: { game: { ...obj.game, region: value } },
     summoner_name: { summoner: { ...obj.summoner, name: value } },
   });
-  const data = buildObjectFromQuery(req.query, queryTree);
+  const data = buildObjectFromQuery(req.body, queryTree);
+  await userDocRef.setData(data);
 
-  await user.doc(userId).setData(data);
+  const response = await userDocRef.getData();
 
-  const response = await user.doc(userId).getData();
   res.status(201).send(response);
 };
 
 const getVotes = async (req, res) => {
   const { id: userId } = res.locals.userPayload;
   const [votes, { version: gameVersion }] = await Promise.all([
-    user.doc(userId).getVotes(),
-    game.getData(),
+    User.doc(userId).getVotes(),
+    Game.doc().getData(),
   ]);
-  const normalizeVote = (voteEntry) => {
-    return vote.normalizeForResponse(gameVersion, voteEntry);
-  };
-
-  const response = votes.map(normalizeVote);
+  const response = votes.map((vote) =>
+    Vote.format(vote).to.response(gameVersion)
+  );
   res.status(200).send(response);
 };
 
 const postVote = async (req, res) => {
   const { id: userId } = res.locals.userPayload;
-  const userDocRef = user.doc(userId);
+  const userDocRef = User.doc(userId);
 
-  const { champion_id: championId, difficulty, excitement } = req.query;
+  const { champion_id: championId, difficulty, excitement } = req.body;
   const voteData = {
     championId,
     difficulty,
@@ -80,13 +76,13 @@ const getChampionVote = async (req, res) => {
   const { championId } = req.params;
 
   const [voteData, { version: gameVersion }] = await Promise.all([
-    user.doc(userId).getChampionVote(championId),
-    game.getData(),
+    User.doc(userId).getChampionVote(championId),
+    Game.doc().getData(),
   ]);
 
   if (!voteData) throw new NotFoundError([createError('Vote not found')]);
 
-  const response = vote.normalizeForResponse(gameVersion, voteData);
+  const response = Vote.format(voteData).to.response(gameVersion);
 
   res.status(200).send(response);
 };

@@ -1,4 +1,4 @@
-const user = require('../../models/database/user');
+const User = require('../../models/database/user');
 const { createError } = require('../../errors/http_error');
 
 const fetchUserData = async (req, res, next) => {
@@ -6,21 +6,40 @@ const fetchUserData = async (req, res, next) => {
     userPayload: { id: userId },
   } = res.locals;
 
-  res.locals.userData = await user.doc(userId).getData();
+  res.locals.userData = await User.doc(userId).getData();
 
   return next();
 };
 
 const createUserIfNoData = async (req, res, next) => {
   const { userPayload, userData } = res.locals;
-  const userDocRef = user.doc(userPayload.id);
+  const userDocRef = User.doc(userPayload.id);
 
   if (userData) return next();
 
-  res.locals.isUserNew = true;
+  const createdUserData = User.create({
+    personal: {
+      id: userPayload.id,
+      name: userPayload.name,
+      image: userPayload.image,
+      email: userPayload.email,
+    },
+    game: { region: null },
+    summoner: {
+      accountId: null,
+      puuid: null,
+      name: null,
+      profileIconId: null,
+      league: {
+        tier: null,
+        rank: null,
+      },
+    },
+  });
 
-  const createdUserData = user.create(userPayload);
   await userDocRef.setData(createdUserData);
+
+  res.locals.isUserNew = true;
   res.locals.userData = await userDocRef.getData();
 
   return next();
