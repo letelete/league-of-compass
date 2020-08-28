@@ -1,10 +1,10 @@
-const validate = require('./validation');
-const axios = require('axios');
+const Validate = require('./validation');
+const Axios = require('axios');
 const { createError } = require('../../errors/http_error');
 const { UnauthorizedError } = require('../../errors/4xx');
 
 const verifyGoogleAuthToken = async (req, res, next) => {
-  validate.verifyGoogleTokenRequest(req);
+  Validate.verifyGoogleTokenRequest(req);
 
   const idToken = req.body.id_token;
 
@@ -13,8 +13,9 @@ const verifyGoogleAuthToken = async (req, res, next) => {
     return { id, email, name, image };
   };
 
-  res.locals.userPayload = await axios
-    .get(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`)
+  res.locals.userPayload = await Axios.get(
+    `https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`
+  )
     .then(deserializeResponse)
     .catch((err) => {
       if (err.response) {

@@ -1,16 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const router = require('./routes');
+const Express = require('express');
+const BodyParser = require('body-parser');
+const Cors = require('cors');
+const AppRouter = require('./routes');
 const { logErrors, handleErrors } = require('./middlewares/errors');
 
-const app = express();
+const app = Express();
 
-app.use(cors({ origin: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(Cors({ origin: true }));
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: true }));
 
-app.use('/', router);
+app.use('/', AppRouter);
 app.use(logErrors);
 app.use(handleErrors);
 

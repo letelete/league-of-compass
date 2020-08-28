@@ -1,26 +1,24 @@
-const database = require('../../configs/firebase');
+const Database = require('../../configs/firebase');
 const Vote = require('./Vote');
 const Regions = require('../lol_api/regions');
 const League = require('../lol_api/league');
+const Yup = require('yup');
 const { BadRequestError } = require('../../errors/4xx');
 const { createError } = require('../../errors/http_error');
-const yup = require('yup');
-const filterObject = require('../../helpers/object');
 
 const {
   attachWhenNotEmpty,
-} = require('../../helpers/yup/attach_obj_when_not_empty');
+} = require('../../helpers/Yup/attach_obj_when_not_empty');
 
-const schema = yup.object().shape({
+const schema = Yup.object().shape({
   personal: attachWhenNotEmpty({
-    id: yup.string().trim(),
-    name: yup.string().trim(),
-    image: yup.string().url().trim(),
-    email: yup.string().email().trim(),
+    id: Yup.string().trim(),
+    name: Yup.string().trim(),
+    image: Yup.string().url().trim(),
+    email: Yup.string().email().trim(),
   }),
   game: attachWhenNotEmpty({
-    region: yup
-      .string()
+    region: Yup.string()
       .nullable()
       .uppercase()
       .trim()
@@ -29,25 +27,24 @@ const schema = yup.object().shape({
       ),
   }),
   summoner: attachWhenNotEmpty({
-    accountId: yup.string().nullable().trim(),
-    puuid: yup.string().nullable().trim(),
-    name: yup.string().nullable().trim().min(3).max(16),
-    profileIconId: yup.number().nullable(),
+    accountId: Yup.string().nullable().trim(),
+    puuid: Yup.string().nullable().trim(),
+    name: Yup.string().nullable().trim().min(3).max(16),
+    profileIconId: Yup.number().nullable(),
     league: attachWhenNotEmpty({
-      tier: yup
-        .string()
+      tier: Yup.string()
         .nullable()
         .uppercase()
         .trim()
         .test('Tier exists', "Unknown user's league tier", (tier) =>
           tier ? League.tiers.hasOwnProperty(tier) : true
         ),
-      rank: yup.number().nullable().min(1).max(4),
+      rank: Yup.number().nullable().min(1).max(4),
     }),
   }),
 });
 
-const validate = (data) => {
+const cast = (data) => {
   let validated;
   try {
     validated = schema.validateSync(data, { abortEarly: false });
@@ -57,19 +54,16 @@ const validate = (data) => {
   return validated;
 };
 
-const create = validate;
-
 const doc = (id) => {
   const getData = async () => {
-    return await database
-      .doc(userPath())
+    return await Database.doc(userPath())
       .get()
       .then((doc) => (doc.exists ? doc.data() : null));
   };
 
   const setData = async (data) => {
-    const user = validate(data);
-    await database.doc(userPath()).set(user, { merge: true });
+    const user = cast(data);
+    await Database.doc(userPath()).set(user, { merge: true });
     return user;
   };
 
@@ -78,20 +72,19 @@ const doc = (id) => {
       const docs = snapshot.docs;
       return docs.map((doc) => doc.data());
     };
-    return await database.collection(votesPath()).get().then(deserialize);
+    return await Database.collection(votesPath()).get().then(deserialize);
   };
 
   const setVote = async (data) => {
-    const vote = Vote.validate(data);
+    const vote = Vote.cast(data);
     const path = `${votesPath()}/${vote.championId}`;
-    await database.doc(path).set(vote, { merge: true });
+    await Database.doc(path).set(vote, { merge: true });
     return vote;
   };
 
   const getChampionVote = async (championId) => {
     const path = `${votesPath()}/${championId}`;
-    return await database
-      .doc(path)
+    return await Database.doc(path)
       .get()
       .then((doc) => (doc.exists ? doc.data() : null));
   };
@@ -109,4 +102,4 @@ const doc = (id) => {
   });
 };
 
-module.exports = { doc, create, validate };
+module.exports = { doc, cast };

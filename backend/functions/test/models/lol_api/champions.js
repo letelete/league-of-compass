@@ -1,11 +1,10 @@
-const champions = require('../../../app/models/lol_api/champions');
-const sinon = require('sinon');
-const fakeApi = require('../../lol_api/fake_api');
-const { endpoints } = require('../../../app/configs/lol_endpoints');
-const axios = require('axios');
-const functions = require('firebase-functions');
+const Champions = require('../../../app/models/lol_api/champions');
+const Sinon = require('sinon');
+const FakeApi = require('../../lol_api/fake_api');
+const Axios = require('axios');
+const Game = require('../../../app/models/database/game');
 const { mockedVersion } = require('../../lol_api/fake_api');
-const game = require('../../../app/models/database/game');
+const { endpoints } = require('../../../app/configs/lol_endpoints');
 const { expect } = require('chai');
 describe('Champions', () => {
   const versionedEndpoints = endpoints(mockedVersion);
@@ -13,16 +12,16 @@ describe('Champions', () => {
     let sandbox;
 
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
+      sandbox = Sinon.createSandbox();
       const mockedGameData = new Promise((r) => r({ version: mockedVersion }));
-      sandbox.stub(game, 'getData').returns(mockedGameData);
+      sandbox.stub(Game, 'getData').returns(mockedGameData);
     });
 
     afterEach(() => sandbox.restore());
 
     it('Should serialize response', async () => {
-      sandbox.stub(axios, 'get').returns(fakeApi.getChampions());
-      const output = await champions.getChampions();
+      sandbox.stub(Axios, 'get').returns(FakeApi.getChampions());
+      const output = await Champions.getChampions();
       const expected = [
         {
           id: 'Vayne',

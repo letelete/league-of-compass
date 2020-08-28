@@ -1,5 +1,3 @@
-const functions = require('firebase-functions');
-
 const defaultLang = 'en_US';
 
 const baseUrl = (version) =>

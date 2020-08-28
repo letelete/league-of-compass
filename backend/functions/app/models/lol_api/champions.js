@@ -1,13 +1,13 @@
-const axios = require('axios');
-const { endpoints } = require('../../configs/lol_endpoints');
-const game = require('../database/game');
-const createPrefixTable = require('../../helpers/string_prefix_table');
+const Axios = require('axios');
 const Champion = require('../database/champion');
+const Game = require('../database/game');
+const createPrefixTable = require('../../helpers/string_prefix_table');
+const LolEndpoints = require('../../configs/lol_endpoints');
 
 const getChampions = async () => {
-  const { version } = await game.getData();
-  const versionedEndpoints = endpoints(version);
-  return await axios.get(versionedEndpoints.allChampions()).then((response) => {
+  const { version } = await Game.getData();
+  const versionedEndpoints = LolEndpoints.endpoints(version);
+  return await Axios.get(versionedEndpoints.allChampions()).then((response) => {
     const { data: champions } = response.data;
     const deserializeChampion = (champion) =>
       deserialize(champion, versionedEndpoints);

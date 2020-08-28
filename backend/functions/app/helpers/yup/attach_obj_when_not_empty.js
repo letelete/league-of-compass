@@ -1,8 +1,8 @@
-const yup = require('yup');
+const Yup = require('yup');
 
 exports.attachWhenNotEmpty = (obj) => {
-  return yup.object().when({
+  return Yup.object().when({
     is: (obj) => obj && typeof obj === 'object' && Object.keys(obj).length,
-    then: yup.object().shape(obj),
+    then: Yup.object().shape(obj),
   });
 };

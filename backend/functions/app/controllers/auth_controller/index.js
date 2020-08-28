@@ -17,7 +17,7 @@ const createUserIfNoData = async (req, res, next) => {
 
   if (userData) return next();
 
-  const createdUserData = User.create({
+  const createdUserData = {
     personal: {
       id: userPayload.id,
       name: userPayload.name,
@@ -35,8 +35,7 @@ const createUserIfNoData = async (req, res, next) => {
         rank: null,
       },
     },
-  });
-
+  };
   await userDocRef.setData(createdUserData);
 
   res.locals.isUserNew = true;

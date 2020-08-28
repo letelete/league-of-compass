@@ -4,7 +4,7 @@ const { BadRequestError } = require('../../app/errors/4xx');
 
 describe('Vote', () => {
   it('Should create a valid Vote', () => {
-    const output = Vote.create({
+    const output = Vote.cast({
       championId: 'abc',
       difficulty: 1.0,
       excitement: -1.0,
@@ -19,7 +19,7 @@ describe('Vote', () => {
 
   it('Should throw an exception on invalid Vote', () => {
     const createVote = () =>
-      Vote.create({
+      Vote.cast({
         championId: 'abc',
         difficulty: 1.5,
         excitement: -1.0,
@@ -33,7 +33,7 @@ describe('Vote', () => {
       difficulty: 1.0,
       excitement: -0.5,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).not.to.throw(BadRequestError);
   });
 
@@ -43,7 +43,7 @@ describe('Vote', () => {
       difficulty: -0.1234,
       excitement: 1.0,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).not.to.throw(BadRequestError);
   });
 
@@ -53,7 +53,7 @@ describe('Vote', () => {
       difficulty: 1,
       excitement: 0,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).not.to.throw(BadRequestError);
   });
 
@@ -63,7 +63,7 @@ describe('Vote', () => {
       difficulty: 0.12,
       excitement: 0,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).not.to.throw(BadRequestError);
   });
 
@@ -78,7 +78,7 @@ describe('Vote', () => {
       difficulty: 1,
       excitement: 0,
     };
-    const output = Vote.validate(input);
+    const output = Vote.cast(input);
     expect(output).to.deep.equal(expected);
   });
 
@@ -88,7 +88,7 @@ describe('Vote', () => {
       difficulty: -1.5,
       excitement: 0,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).to.throw(BadRequestError);
   });
 
@@ -98,7 +98,7 @@ describe('Vote', () => {
       difficulty: -0.12345,
       excitement: 1.0,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).to.throw(BadRequestError);
   });
 
@@ -108,7 +108,7 @@ describe('Vote', () => {
       difficulty: '0.5',
       excitement: -0.1,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).not.to.throw(BadRequestError);
   });
 
@@ -118,7 +118,7 @@ describe('Vote', () => {
       difficulty: 0.5,
       excitement: -0.1337,
     };
-    const validate = () => Vote.validate(input);
+    const validate = () => Vote.cast(input);
     expect(validate).to.throw(BadRequestError);
   });
 
@@ -128,7 +128,7 @@ describe('Vote', () => {
       difficulty: '0.1234',
       excitement: '-1.0',
     };
-    const output = Vote.create(input);
+    const output = Vote.cast(input);
     const expected = {
       championId: 'ab_cd_123',
       difficulty: 0.1234,

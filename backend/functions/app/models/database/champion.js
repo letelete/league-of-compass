@@ -1,8 +1,7 @@
-const Yup = require('Yup');
+const Yup = require('yup');
 const { BadRequestError } = require('../../errors/4xx');
 
-const schema = Yup
-  .object()
+const schema = Yup.object()
   .noUnknown()
   .shape({
     id: Yup.string().trim().required(),
@@ -19,8 +18,7 @@ const schema = Yup
     }),
   });
 
-const responseSchema = Yup
-  .object()
+const responseSchema = Yup.object()
   .noUnknown()
   .shape({
     id: Yup.string().trim().required(),

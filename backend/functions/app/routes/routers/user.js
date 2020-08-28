@@ -1,11 +1,11 @@
-const express = require('express');
-const UserController = require('../controllers/user_controller');
-const { verifyGoogleAuthToken } = require('../middlewares/auth_token');
+const Express = require('express');
+const UserController = require('../../controllers/user_controller');
+const { verifyGoogleAuthToken } = require('../../middlewares/auth_token');
 
-require('../helpers/async_wrapper');
+require('../../helpers/async_wrapper');
 
-const router = express.Router();
-const verifiedRouter = express.Router();
+const router = Express.Router();
+const verifiedRouter = Express.Router();
 
 router.use(
   '/',

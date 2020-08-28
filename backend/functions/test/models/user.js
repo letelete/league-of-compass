@@ -1,5 +1,5 @@
-const { expect } = require('chai');
 const User = require('../../app/models/database/user');
+const { expect } = require('chai');
 const { BadRequestError } = require('../../app/errors/4xx');
 describe('User', () => {
   describe('Create', () => {
@@ -20,7 +20,7 @@ describe('User', () => {
           email: 'john.doe@protonmail.com',
         },
       };
-      const output = User.create(input);
+      const output = User.cast(input);
       expect(output).to.deep.equal(expected);
     });
 
@@ -35,7 +35,7 @@ describe('User', () => {
           region: 'EUN1',
         },
       };
-      const output = User.create(input);
+      const output = User.cast(input);
       expect(output).to.deep.equal(expected);
     });
 
@@ -64,7 +64,7 @@ describe('User', () => {
           },
         },
       };
-      const output = User.create(input);
+      const output = User.cast(input);
       expect(output).to.deep.equal(expected);
     });
   });
@@ -114,14 +114,14 @@ describe('User', () => {
             },
           },
         };
-        const output = User.create(input);
+        const output = User.cast(input);
         expect(output).to.deep.equal(expected);
       });
     });
     describe('Invalid', () => {
       it('should invalidate on unknown league tier', () => {
         const createUser = () =>
-          User.create({
+          User.cast({
             summoner: {
               league: {
                 tier: 'Master Of Puppets',
@@ -133,7 +133,7 @@ describe('User', () => {
       });
       it("should invalidate on unknown user's region", () => {
         const createUser = () =>
-          User.create({
+          User.cast({
             game: {
               region: 'EUNE',
             },
@@ -154,7 +154,7 @@ describe('User', () => {
             },
           },
         };
-        const createUser = () => User.create(invalidUser);
+        const createUser = () => User.cast(invalidUser);
         const expectedError = [
           'personal.email must be a valid email',
           'summoner.name must be at most 16 characters',
