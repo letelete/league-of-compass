@@ -1,5 +1,5 @@
 const LolApi = require('../app/models/lol_api/champions');
-const Database = require('../app/configs/firebase');
+const { Database } = require('../app/configs/firebase');
 
 const invalidateGameData = async (change, context) => {
   const before = change.before.data();

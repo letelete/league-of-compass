@@ -1,6 +1,7 @@
 const User = require('../../app/models/database/user');
 const { expect } = require('chai');
 const { BadRequestError } = require('../../app/errors/4xx');
+const { ValidationError } = require('yup');
 describe('User', () => {
   describe('Create', () => {
     it('should not include empty objects and null fields', () => {
@@ -32,7 +33,7 @@ describe('User', () => {
       };
       const expected = {
         game: {
-          region: 'EUN1',
+          region: 'eun1',
         },
       };
       const output = User.cast(input);
@@ -101,7 +102,7 @@ describe('User', () => {
             email: 'john.doe@protonmail.com',
           },
           game: {
-            region: 'EUN1',
+            region: 'eun1',
           },
           summoner: {
             accountId: 'xyz123',
@@ -109,7 +110,7 @@ describe('User', () => {
             name: 'A nickname',
             profileIconId: 12345,
             league: {
-              tier: 'DIAMOND',
+              tier: 'diamond',
               rank: 1,
             },
           },
@@ -138,30 +139,47 @@ describe('User', () => {
               region: 'EUNE',
             },
           });
-        const expectedMessage = "Unknown user's game region";
-        expect(createUser).to.throw(expectedMessage);
+        expect(createUser).to.throw(ValidationError);
       });
-      it('should invalidate with multiple errors', () => {
+      it('should invalidate email', () => {
         const invalidUser = {
           personal: {
             email: 'thisIsNotAnEmail#protonmail.com',
           },
+        };
+        const createUser = () => User.cast(invalidUser);
+        expect(createUser).to.throw(ValidationError);
+      });
+      it('should invalidate name', () => {
+        const invalidUser = {
           summoner: {
             name: 'Extremely long, out of range nickname',
+          },
+        };
+        const createUser = () => User.cast(invalidUser);
+        expect(createUser).to.throw(ValidationError);
+      });
+      it('should invalidate tier', () => {
+        const invalidUser = {
+          summoner: {
             league: {
               tier: 'Master Of Puppets',
+            },
+          },
+        };
+        const createUser = () => User.cast(invalidUser);
+        expect(createUser).to.throw(ValidationError);
+      });
+      it('should invalidate rank', () => {
+        const invalidUser = {
+          summoner: {
+            league: {
               rank: 1337,
             },
           },
         };
         const createUser = () => User.cast(invalidUser);
-        const expectedError = [
-          'personal.email must be a valid email',
-          'summoner.name must be at most 16 characters',
-          "Unknown user's league tier",
-          'summoner.league.rank must be less than or equal to 4',
-        ].reduce((msg, next) => `${msg},\n${next}`);
-        expect(createUser).to.throw(expectedError);
+        expect(createUser).to.throw(ValidationError);
       });
     });
   });

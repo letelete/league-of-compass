@@ -31,4 +31,12 @@ const filterObject = (obj, ...predicates) => {
   return traverse(obj);
 };
 
-module.exports = filterObject;
+const hasProperty = (obj, path) => {
+  return path.split('.').every((key) => {
+    const hasProperty = obj && obj.hasOwnProperty(key);
+    if (hasProperty) obj = obj[key];
+    return hasProperty;
+  });
+};
+
+module.exports = { filterObject, hasProperty };

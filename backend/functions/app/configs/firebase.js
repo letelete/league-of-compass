@@ -1,7 +1,14 @@
 const Admin = require('firebase-admin');
 
-const credentials = Admin.credential.applicationDefault();
+const initializeApp = () => {
+  const credentials = Admin.credential.applicationDefault();
+  Admin.initializeApp({ credentials });
+};
 
-Admin.initializeApp({ credentials });
+initializeApp();
 
-module.exports = Admin.firestore();
+const Database = Admin.firestore();
+
+const FieldValue = Admin.firestore.FieldValue;
+
+module.exports = { Database, FieldValue };

@@ -14,7 +14,9 @@ describe('Champions', () => {
     beforeEach(() => {
       sandbox = Sinon.createSandbox();
       const mockedGameData = new Promise((r) => r({ version: mockedVersion }));
-      sandbox.stub(Game, 'getData').returns(mockedGameData);
+      sandbox.stub(Game, 'doc').returns({
+        getData: async () => mockedGameData,
+      });
     });
 
     afterEach(() => sandbox.restore());

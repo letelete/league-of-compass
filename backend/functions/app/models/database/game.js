@@ -1,7 +1,7 @@
-const Database = require('../../configs/firebase');
+const { Database } = require('../../configs/firebase');
 
 const doc = () => {
-  const getData = async () => ref.get().then(deserializeData);
+  const getData = async () => ref.get().then((doc) => doc.data());
 
   const ref = Database.collection('lol').doc('data');
 

@@ -1,5 +1,4 @@
-const Database = require('../../configs/firebase');
-const Vote = require('./Vote');
+const { Database } = require('../../configs/firebase');
 const Regions = require('../lol_api/regions');
 const League = require('../lol_api/league');
 const Yup = require('yup');
@@ -20,10 +19,14 @@ const schema = Yup.object().shape({
   game: attachWhenNotEmpty({
     region: Yup.string()
       .nullable()
-      .uppercase()
+      .lowercase()
       .trim()
-      .test('Region exists', "Unknown user's game region", (region) =>
-        region ? Regions.data.hasOwnProperty(region) : true
+      .test(
+        'is region valid',
+        `Invalid region. Expected one of following: ${Object.keys(
+          Regions.data
+        )}`,
+        (region) => (region ? Regions.data.hasOwnProperty(region) : true)
       ),
   }),
   summoner: attachWhenNotEmpty({
@@ -33,72 +36,42 @@ const schema = Yup.object().shape({
     profileIconId: Yup.number().nullable(),
     league: attachWhenNotEmpty({
       tier: Yup.string()
-        .nullable()
-        .uppercase()
+        .lowercase()
         .trim()
-        .test('Tier exists', "Unknown user's league tier", (tier) =>
-          tier ? League.tiers.hasOwnProperty(tier) : true
+        .nullable()
+        .test(
+          'is tier valid',
+          `Invalid tier. Expected one of following: ${Object.keys(
+            League.tiers
+          )}`,
+          (tier) => (tier ? League.tiers.hasOwnProperty(tier) : true)
         ),
       rank: Yup.number().nullable().min(1).max(4),
     }),
   }),
 });
 
-const cast = (data) => {
-  let validated;
-  try {
-    validated = schema.validateSync(data, { abortEarly: false });
-  } catch (err) {
-    throw new BadRequestError(err.errors);
-  }
-  return validated;
-};
+const cast = (data) => schema.validateSync(data);
 
 const doc = (id) => {
   const getData = async () => {
-    return await Database.doc(userPath())
+    return Database.doc(userPath)
       .get()
       .then((doc) => (doc.exists ? doc.data() : null));
   };
 
   const setData = async (data) => {
     const user = cast(data);
-    await Database.doc(userPath()).set(user, { merge: true });
-    return user;
+    return Database.doc(userPath).set(user, { merge: true });
   };
 
-  const getVotes = async () => {
-    const deserialize = (snapshot) => {
-      const docs = snapshot.docs;
-      return docs.map((doc) => doc.data());
-    };
-    return await Database.collection(votesPath()).get().then(deserialize);
-  };
+  const userPath = `users/${id}`;
 
-  const setVote = async (data) => {
-    const vote = Vote.cast(data);
-    const path = `${votesPath()}/${vote.championId}`;
-    await Database.doc(path).set(vote, { merge: true });
-    return vote;
-  };
-
-  const getChampionVote = async (championId) => {
-    const path = `${votesPath()}/${championId}`;
-    return await Database.doc(path)
-      .get()
-      .then((doc) => (doc.exists ? doc.data() : null));
-  };
-
-  const userPath = () => `users/${id}`;
-
-  const votesPath = () => `users/${id}/votes`;
+  const ratingsPath = `users/${id}/ratings`;
 
   return Object.freeze({
     getData,
     setData,
-    getVotes,
-    setVote,
-    getChampionVote,
   });
 };
 

@@ -1,13 +1,13 @@
 const tiers = {
-  IRON: {},
-  BRONZE: {},
-  SILVER: {},
-  GOLD: {},
-  PLATINUM: {},
-  DIAMOND: {},
-  MASTER: {},
-  GRANDMASTER: {},
-  CHALLENGER: {},
+  iron: {},
+  bronze: {},
+  silver: {},
+  gold: {},
+  platinum: {},
+  diamond: {},
+  master: {},
+  grandmaster: {},
+  challenger: {},
 };
 
 const rankRange = {

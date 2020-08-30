@@ -1,4 +1,4 @@
-const Database = require('../configs/firebase');
+const { Database } = require('../configs/firebase');
 
 class DocumentIdPagination {
   constructor({ ref, docPath, perPage }) {
@@ -8,8 +8,7 @@ class DocumentIdPagination {
 
     this.build = async () => {
       this._dataRef = this._docPath
-        ? await Database
-            .doc(this._docPath)
+        ? await Database.doc(this._docPath)
             .get()
             .then(this._getRefWithDocOffset)
         : this._ref();

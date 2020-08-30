@@ -5,7 +5,7 @@ const createPrefixTable = require('../../helpers/string_prefix_table');
 const LolEndpoints = require('../../configs/lol_endpoints');
 
 const getChampions = async () => {
-  const { version } = await Game.getData();
+  const { version } = await Game.doc().getData();
   const versionedEndpoints = LolEndpoints.endpoints(version);
   return await Axios.get(versionedEndpoints.allChampions()).then((response) => {
     const { data: champions } = response.data;

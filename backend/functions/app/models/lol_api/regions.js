@@ -1,58 +1,58 @@
 const data = {
-  BR1: {
-    name: 'Brazil',
-    code: 'BR1',
-    abbrv: 'BR',
+  br1: {
+    name: 'brazil',
+    code: 'br1',
+    abbrv: 'br',
   },
-  EUN1: {
-    name: 'Europe Nordic & East',
-    code: 'EUN1',
-    abbrv: 'EUNE',
+  eun1: {
+    name: 'europe nordic & east',
+    code: 'eun1',
+    abbrv: 'eune',
   },
-  EUW1: {
-    name: 'Europe West',
-    code: 'EUW1',
-    abbrv: 'EUW',
+  euw1: {
+    name: 'europe west',
+    code: 'euw1',
+    abbrv: 'euw',
   },
-  LA1: {
-    name: 'Latin America North',
-    code: 'LA1',
-    abbrv: 'LAN',
+  la1: {
+    name: 'latin america north',
+    code: 'la1',
+    abbrv: 'lan',
   },
-  LA2: {
-    name: 'Latin America South',
-    code: 'LA1',
-    abbrv: 'LAS',
+  la2: {
+    name: 'latin america south',
+    code: 'la1',
+    abbrv: 'las',
   },
-  NA1: {
-    name: 'North America',
-    code: 'NA1',
-    abbrv: 'NA',
+  na1: {
+    name: 'north america',
+    code: 'na1',
+    abbrv: 'na',
   },
-  OC1: {
-    name: 'Oceania',
-    code: 'OC1',
-    abbrv: 'OCE',
+  oc1: {
+    name: 'oceania',
+    code: 'oc1',
+    abbrv: 'oce',
   },
-  RU1: {
-    name: 'Russia',
-    code: 'RU1',
-    abbrv: 'RU',
+  ru1: {
+    name: 'russia',
+    code: 'ru1',
+    abbrv: 'ru',
   },
-  TR1: {
-    name: 'Turkey',
-    code: 'TR1',
-    abbrv: 'TR',
+  tr1: {
+    name: 'turkey',
+    code: 'tr1',
+    abbrv: 'tr',
   },
-  JP1: {
-    name: 'Japan',
-    code: 'JP1',
-    abbrv: 'JP',
+  jp1: {
+    name: 'japan',
+    code: 'jp1',
+    abbrv: 'jp',
   },
-  KR: {
-    name: 'Republic of Korea',
-    code: 'KR',
-    abbrv: 'KR',
+  kr: {
+    name: 'republic of korea',
+    code: 'kr',
+    abbrv: 'kr',
   },
 };
 
