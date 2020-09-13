@@ -1,4 +1,5 @@
 const { Database } = require('../configs/firebase');
+const { paginationResponse } = require('./formatting');
 
 class DocumentIdPagination {
   constructor({ ref, docPath, perPage }) {
@@ -18,16 +19,16 @@ class DocumentIdPagination {
       this._firstVisibleDoc = this._getFirstVisibleDoc();
       this._lastVisibleDoc = this._getLastVisibleDoc();
 
-      const [prevPageId, nextPageId] = await Promise.all([
+      const [prevPage, nextPage] = await Promise.all([
         this._getPrevPageId(),
         this._getNextPageId(),
       ]);
 
-      return {
-        docs: this._docs,
-        prevPageId,
-        nextPageId,
-      };
+      return paginationResponse({
+        prevPage,
+        nextPage,
+        data: this._docs,
+      });
     };
 
     this._getRefWithDocOffset = (doc) => this._ref().startAt(doc);

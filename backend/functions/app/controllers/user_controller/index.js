@@ -39,11 +39,11 @@ const getAllVotes = async (req, res) => {
     Game.doc().getData(),
   ]);
   const versionedLolEndpoints = LolEndpoints.endpoints(gameVersion);
-  const allRatingsData = ratings.map((rating) => ({
-    ...rating,
+  const allRatingsData = Object.entries(ratings).map(([championId, data]) => ({
+    ...data,
     champion: {
-      ...rating.champion,
-      image: versionedLolEndpoints.championAvatarById(rating.champion.id),
+      id: championId,
+      image: versionedLolEndpoints.championAvatarById(championId),
     },
   }));
   res.status(200).send({

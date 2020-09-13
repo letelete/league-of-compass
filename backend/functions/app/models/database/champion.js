@@ -1,5 +1,6 @@
 const Yup = require('yup');
 const { BadRequestError } = require('../../errors/4xx');
+const { Database } = require('../../configs/firebase');
 
 const schema = Yup.object()
   .noUnknown()
@@ -42,14 +43,24 @@ const cast = (data) => {
   return casted;
 };
 
-const format = (data) => ({
+const format = {
   to: {
-    response: () =>
+    response: (data) =>
       responseSchema.cast({
         ...data,
         role: { ...data.role, all: Object.keys(data.role.all) },
       }),
   },
-});
+};
 
-module.exports = { cast, format };
+const getAllChampions = async ({ searchName }) => {
+  let ref = Database.collection('champions');
+
+  if (searchName) {
+    ref = ref.where('prefixes.name', 'array-contains', searchName);
+  }
+
+  return ref.get().then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+};
+
+module.exports = { cast, format, getAllChampions };

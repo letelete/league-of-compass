@@ -2,6 +2,7 @@ const Yup = require('yup');
 const RatingAttrs = require('./rating_attrs');
 const { BadRequestError } = require('../../../errors/4xx');
 const { Database } = require('../../../configs/firebase');
+const { firebaseDocsToObject } = require('../../../helpers/firebase');
 
 require('../../../helpers/yup/cast_and_validate/sync');
 
@@ -31,12 +32,7 @@ const doc = (userId) => {
   const getAllRatings = async () => {
     return Database.collection(ratingsCollectionPath)
       .get()
-      .then((snapshot) =>
-        snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          champion: { id: doc.id },
-        }))
-      );
+      .then((snapshot) => firebaseDocsToObject(snapshot.docs));
   };
 
   return Object.freeze({

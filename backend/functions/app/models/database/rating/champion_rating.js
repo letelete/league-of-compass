@@ -2,9 +2,10 @@ const Yup = require('yup');
 const RatingAttrs = require('./rating_attrs');
 const { Database, FieldValue } = require('../../../configs/firebase');
 const { BadRequestError } = require('../../../errors/4xx');
-const { hasProperty } = require('../../../helpers/object');
+const { getProperty } = require('../../../helpers/object');
 const LolEndpoints = require('../../../configs/lol_endpoints');
 const RatingPaths = require('./rating_paths');
+const { firebaseDocsToObject } = require('../../../helpers/firebase');
 
 require('../../../helpers/yup/cast_and_validate/sync');
 require('../../../helpers/yup/round_to_n_decimals');
@@ -30,7 +31,7 @@ const responseSchema = Yup.object().shape({
   }),
   rating: Yup.object().shape({
     count: Yup.reach(newRatingSchema, 'count'),
-    ratings: RatingAttrs.getAttrsAsSchema(),
+    ratings: RatingAttrs.getAttrsAsSchema(Yup.number().required()),
   }),
 });
 
@@ -46,12 +47,7 @@ const getAllRatings = async ({ region, tier }) => {
   return Database.collection('ratings')
     .orderBy(`regions.${region}.tiers.${tier}`)
     .get()
-    .then((snapshot) =>
-      snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return { ...data, id: doc.id };
-      })
-    );
+    .then((snapshot) => firebaseDocsToObject(snapshot.docs));
 };
 
 const postRatings = async ({ championId, attrs, ratings, isAuthorUnique }) => {
@@ -104,7 +100,7 @@ const getDatabaseEntrySchema = ({ ratings, isAuthorUnique }) => {
 
 const filterWithAttrs = (data, { region, tier }) => {
   const path = `regions.${region}.tiers.${tier}`;
-  return hasProperty(data, path)
+  return getProperty(data, path)
     ? data['regions'][region]['tiers'][tier]
     : null;
 };

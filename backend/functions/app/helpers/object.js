@@ -31,12 +31,12 @@ const filterObject = (obj, ...predicates) => {
   return traverse(obj);
 };
 
-const hasProperty = (obj, path) => {
-  return path.split('.').every((key) => {
-    const hasProperty = obj && obj.hasOwnProperty(key);
-    if (hasProperty) obj = obj[key];
-    return hasProperty;
-  });
-};
+const getProperty = (obj, path) =>
+  path
+    .split('.')
+    .reduce(
+      (base, key) => (base && base.hasOwnProperty(key) ? base[key] : null),
+      obj
+    );
 
-module.exports = { filterObject, hasProperty };
+module.exports = { filterObject, getProperty };

@@ -1,9 +1,9 @@
 const { expect } = require('chai');
-const { hasProperty } = require('../../app/helpers/object');
+const { getProperty } = require('../../app/helpers/object');
 
 describe('Object helpers', () => {
-  describe('Has property', () => {
-    it('should confirm, that object has a property', () => {
+  describe('Get property', () => {
+    it('should return a property value', () => {
       const obj = {
         a: {
           name: 'a',
@@ -15,9 +15,9 @@ describe('Object helpers', () => {
           },
         },
       };
-      expect(hasProperty(obj, 'a.b.c.name')).to.be.true;
+      expect(getProperty(obj, 'a.b.c.name')).to.equal('c');
     });
-    it('should deny, that object has a property', () => {
+    it('should return a null on invalid property', () => {
       const obj = {
         regions: {
           eun1: {
@@ -29,15 +29,11 @@ describe('Object helpers', () => {
           euw: {},
         },
       };
-      expect(hasProperty(obj, 'a.b.c')).to.be.false;
+      expect(getProperty(obj, 'a.b.c')).to.equal(null);
     });
-    it('should deny, that object has a property on null object', () => {
+    it('should return null on null object', () => {
       const obj = null;
-      expect(hasProperty(obj, 'regions.eun1.tiers.iron')).to.be.false;
-    });
-    it('should deny if given object is not an Object type', () => {
-      const obj = [{ id: 1 }, { id: 2 }, { id: 3 }];
-      expect(hasProperty(obj, '0.id.1')).to.be.false;
+      expect(getProperty(obj, 'regions.eun1.tiers.iron')).to.equal(null);
     });
   });
 });

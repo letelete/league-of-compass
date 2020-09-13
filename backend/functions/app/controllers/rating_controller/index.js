@@ -20,14 +20,13 @@ const getAllChampionsRating = async (req, res) => {
     Game.doc().getData(),
   ]);
 
-  const ratings = await ratingsData.map((ratingData) => {
-    const filteredRating = ChampionRating.filterWithAttrs(ratingData, attrs);
-    return ChampionRating.format.to.response({
-      championId: ratingData.id,
+  const ratings = await Object.entries(ratingsData).map(([championId, data]) =>
+    ChampionRating.format.to.response({
+      championId,
       gameVersion: game.version,
-      rating: filteredRating,
-    });
-  });
+      rating: ChampionRating.filterWithAttrs(data, attrs),
+    })
+  );
 
   res.status(200).send({
     length: ratings.length,
