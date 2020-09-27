@@ -1,0 +1,52 @@
+:root {
+  --font__family--sans: 'Open Sans', sans-serif;
+  --font__family--serif: 'David Libre', serif;
+
+  --font__size--large: 1.5rem;
+  --font__size--medium: 1.125rem;
+  --font__size--normal: 1rem;
+  --font__size--small: 0.875rem;
+
+  --color__text--primary: rgba(255, 255, 255, 0.84);
+  --color__text--secondary: rgba(255, 255, 255, 0.6);
+  --color__text--disabled: rgba(255, 255, 255, 0.34);
+
+  --color__compass__axis-direction: red;
+  --color__compass__quarter-accent--top-left: blue;
+  --color__compass__quarter-accent--top-right: green;
+  --color__compass__quarter-accent--bottom-left: orange;
+  --color__compass__quarter-accent--bottom-right: yellow;
+
+  --color__tools--primary: rgba(255, 255, 255, 0.96);
+  --color__tools--secondary: rgba(255, 255, 255, 0.7);
+  --color__tools--disabled: rgba(255, 255, 255, 0.34);
+
+  --color__background: #111111;
+  --color__background__blur--tools: rgba(255, 255, 255, 0.2);
+  --color__background__blur--scenes: black;
+}
+
+* {
+  box-sizing: border-box;
+}
+*::before {
+  box-sizing: border-box;
+}
+
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  background-color: var(--color__background);
+  color: var(--color__text--primary);
+  font-family: var(--font__family--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}

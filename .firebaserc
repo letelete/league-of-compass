@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "leagueofcompass"
+  },
+  "targets": {
+    "leagueofcompass": {
+      "hosting": {
+        "api": [
+          "api-leagueofcompass"
+        ],
+        "app": [
+          "leagueofcompass"
+        ]
+      }
+    }
   }
 }
