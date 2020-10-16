@@ -24,15 +24,13 @@
   --color__background: #111111;
   --color__background__blur--tools: rgba(255, 255, 255, 0.2);
   --color__background__blur--scenes: black;
+
+  --color--success: #cffffe;
+  --color--failure: #f56a79;
 }
 
-* {
-  box-sizing: border-box;
-}
-*::before {
-  box-sizing: border-box;
-}
-
+*,
+*::before,
 *::after {
   box-sizing: border-box;
 }

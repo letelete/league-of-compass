@@ -1,0 +1,44 @@
+.loading-indicator--circular {
+  border-radius: 50%;
+  height: 1em;
+  position: relative;
+  width: 1em;
+}
+
+.loading-indicator--circular::before,
+.loading-indicator--circular::after {
+  animation: circularLoadingAnimation 1s ease-out infinite;
+  border: 0.15em solid var(--color__tools--primary);
+  border-radius: 50%;
+  bottom: 0;
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.loading-indicator--circular::before {
+  animation-delay: 0.5s;
+}
+
+.loading-indicator--circular::after {
+  animation-delay: 1s;
+}
+
+@keyframes circularLoadingAnimation {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
