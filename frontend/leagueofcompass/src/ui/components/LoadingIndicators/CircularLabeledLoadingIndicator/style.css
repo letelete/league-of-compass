@@ -2,6 +2,7 @@
   align-items: center;
   display: flex;
   flex-flow: column;
+  font-size: calc(2.5 * var(--font__size--large));
   justify-content: center;
 }
 

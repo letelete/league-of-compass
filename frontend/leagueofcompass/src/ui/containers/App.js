@@ -1,15 +1,17 @@
+import AppGrid from '../components/AppGrid';
 import GameBackground from '../components/GameBackground';
-import LoginPage from '../pages/LoginPage';
-import LogoutPage from '../pages/LogoutPage';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
   return (
-    <div className="app">
-      <GameBackground>
-        <LogoutPage />
-      </GameBackground>
-    </div>
+    <main className="app">
+      <Router>
+        <GameBackground>
+          <AppGrid />
+        </GameBackground>
+      </Router>
+    </main>
   );
 };
 

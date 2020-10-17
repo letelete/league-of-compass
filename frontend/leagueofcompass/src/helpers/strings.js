@@ -4,3 +4,7 @@ export const firstLetterCapital = (str) => {
   const secondPart = formatted.slice(1, formatted.length);
   return `${firstPart}${secondPart}`;
 };
+
+export const firstWord = (str) => {
+  return str && str.split(' ')[0];
+};

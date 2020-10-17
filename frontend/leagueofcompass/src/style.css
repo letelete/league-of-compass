@@ -30,7 +30,11 @@
   --color--success: #cffffe;
   --color--failure: #ffa3a3;
 
-  --border--radius: 8px;
+  --color--divider: rgba(255,255,255,0.16);
+
+  --border--radius: 16px;
+
+  --size__nav__item--squared: 120px;
 }
 
 *,
@@ -41,8 +45,7 @@
 
 html,
 body,
-#root,
-.app {
+#root {
   color: var(--color__text--primary);
   font-family: var(--font__family--sans);
   -webkit-font-smoothing: antialiased;
@@ -50,14 +53,25 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  text-decoration: none;
   width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+img {
+  max-height: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 600px) {
   :root {
-    --font__size--large: 1rem;
-    --font__size--medium: 0.85rem;
-    --font__size--normal: 0.75rem;
-    --font__size--small: 0.65rem;
+    --font__size--large: 1.25rem;
+    --font__size--medium: 1rem;
+    --font__size--normal: 0.9rem;
+    --font__size--small: 0.8rem;
   }
 }

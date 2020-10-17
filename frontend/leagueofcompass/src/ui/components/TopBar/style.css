@@ -1,0 +1,5 @@
+.top-bar {
+  display: flex;
+  height: 64px;
+  width: 100%;
+}

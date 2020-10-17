@@ -1,0 +1,25 @@
+.navbar {
+  background-color: var(--color__background__blur--tools);
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  transition: width 0.25s ease-out;
+  width: 280px;
+}
+
+@media (max-width: 1300px) {
+  .navbar {
+    align-items: center;
+    width: 120px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    align-items: center;
+    flex-flow: row;
+    height: 64px;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+}

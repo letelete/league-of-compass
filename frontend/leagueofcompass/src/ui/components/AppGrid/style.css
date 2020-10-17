@@ -1,0 +1,24 @@
+.app__grid {
+  display: grid;
+  grid-template-areas: 'nav content';
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+  width: 100%;
+}
+
+.app__navigation {
+  grid-area: nav;
+}
+
+.app__content {
+  grid-area: content;
+}
+
+@media (max-width: 600px) {
+  .app__grid {
+    grid-template-areas: 'content' 'nav';
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+}

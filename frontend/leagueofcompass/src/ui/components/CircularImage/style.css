@@ -1,0 +1,13 @@
+.circular-image {
+  border-radius: 50%;
+  height: 1em;
+  width: 1em;
+  overflow: hidden;
+}
+
+.circular-image__content {
+  border-radius: inherit;
+  height: inherit;
+  object-fit: cover;
+  width: inherit;
+}
