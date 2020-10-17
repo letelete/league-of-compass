@@ -1,0 +1,22 @@
+.game-background,
+.game-background__filters,
+.game-background__content {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+.game-background {
+  background-image: url('../../../assets/images/app_background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.game-background__filters {
+  backdrop-filter: blur(2em) brightness(0.6) contrast(1.05);
+}

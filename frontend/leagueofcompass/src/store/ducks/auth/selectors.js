@@ -1,5 +1,4 @@
 import { actions } from './index';
-import { createSelector } from '@reduxjs/toolkit';
 import { selectors as errorSelectors } from '../errors';
 import { selectors as loadingSelectors } from '../loadings';
 

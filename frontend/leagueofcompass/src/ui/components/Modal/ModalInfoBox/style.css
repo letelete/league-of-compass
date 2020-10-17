@@ -1,0 +1,8 @@
+.modal__info-box {
+  background-color: var(--color__background__blur--tools);
+  border-radius: var(--border--radius);
+  color: var(--color__text--primary);
+  font-family: var(--font_family--sans);
+  font-size: var(--font__size--normal);
+  padding: 2em 1rem;
+}

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-
-import POLY_STATES from '../components/PolyButton/poly_states';
-import PolyButton from '../components/PolyButton';
+import GameBackground from '../components/GameBackground';
+import LoginPage from '../pages/LoginPage';
+import React from 'react';
 
 const App = () => {
-  return <div className="app"></div>;
+  return (
+    <div className="app">
+      <GameBackground>
+        <LoginPage />
+      </GameBackground>
+    </div>
+  );
 };
 
 export default App;

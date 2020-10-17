@@ -21,12 +21,16 @@
   --color__tools--secondary: rgba(255, 255, 255, 0.7);
   --color__tools--disabled: rgba(255, 255, 255, 0.34);
 
+  --color__button--hover: rgba(255, 255, 255, 0.16);
+
   --color__background: #111111;
   --color__background__blur--tools: rgba(255, 255, 255, 0.2);
   --color__background__blur--scenes: black;
 
   --color--success: #cffffe;
-  --color--failure: #f56a79;
+  --color--failure: #ffa3a3;
+
+  --border--radius: 8px;
 }
 
 *,
@@ -37,8 +41,8 @@
 
 html,
 body,
-#root {
-  background-color: var(--color__background);
+#root,
+.app {
   color: var(--color__text--primary);
   font-family: var(--font__family--sans);
   -webkit-font-smoothing: antialiased;
@@ -47,4 +51,13 @@ body,
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --font__size--large: 1rem;
+    --font__size--medium: 0.85rem;
+    --font__size--normal: 0.75rem;
+    --font__size--small: 0.65rem;
+  }
 }

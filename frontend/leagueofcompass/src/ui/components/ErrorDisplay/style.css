@@ -1,0 +1,24 @@
+.error {
+  color: var(--color--failure);
+  display: flex;
+  flex-flow: column;
+  font-size: var(--font__size--normal);
+}
+
+.error__header {
+  color: var(--color__text--primary);
+  font-size: var(--font__size--large);
+}
+
+.error__status {
+  padding-top: 1.25em;
+}
+
+.error__message {
+  padding-top: 0.75em;
+}
+
+.error__hint {
+  color: var(--color__text--secondary);
+  font-size: var(--font__size--small);
+}

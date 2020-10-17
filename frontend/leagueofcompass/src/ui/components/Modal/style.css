@@ -1,0 +1,11 @@
+.modal {
+  width: 100%;
+}
+
+.modal__title {
+  padding: 0.75em 1rem;
+}
+
+.modal__actions {
+  padding-top: 3em;
+}
