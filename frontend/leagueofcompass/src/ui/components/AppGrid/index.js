@@ -3,6 +3,7 @@ import './style.css';
 import { Route, Switch } from 'react-router-dom';
 
 import AppNavbar from '../AppNavbar';
+import AppTopBar from '../../containers/AppTopBar';
 import AuthRoute from '../../containers/AuthRoute';
 import GlobalRatingPage from '../../pages/GlobalRatingPage';
 import LoginPage from '../../pages/LoginPage';
@@ -12,14 +13,17 @@ import MyRatingPage from '../../pages/MyRatingPage';
 import PATHS from '../../../config/paths';
 import RatePage from '../../pages/RatePage';
 import React from 'react';
+import { useMobileMediaQuery } from '../../hooks/useMediaQuery';
 
 const AppGrid = () => {
+  const isMobile = useMobileMediaQuery();
   return (
     <div className="app__grid">
       <section className="app__navigation">
         <AppNavbar />
       </section>
       <section className="app__content">
+        {isMobile && <AppTopBar />}
         <Switch>
           <Route exact path={PATHS.GLOBAL_RATING}>
             <GlobalRatingPage />

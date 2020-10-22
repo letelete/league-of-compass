@@ -1,5 +1,8 @@
 .top-bar {
+  align-items: center;
   display: flex;
-  height: 64px;
+  height: var(--size__nav--height--mobile);
+  justify-content: flex-end;
   width: 100%;
+  background-color: var(--color__background__blur--tools);
 }

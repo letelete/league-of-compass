@@ -4,13 +4,13 @@
   flex-flow: column;
   height: 100%;
   transition: width 0.25s ease-out;
-  width: 280px;
+  width: var(--size__nav--width--desktop);
 }
 
 @media (max-width: 1300px) {
   .navbar {
     align-items: center;
-    width: 120px;
+    width: var(--size__nav--width--short);
   }
 }
 
@@ -18,7 +18,7 @@
   .navbar {
     align-items: center;
     flex-flow: row;
-    height: 64px;
+    height: var(--size__nav--height--mobile);
     justify-content: space-evenly;
     width: 100%;
   }

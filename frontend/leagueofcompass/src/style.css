@@ -30,11 +30,15 @@
   --color--success: #cffffe;
   --color--failure: #ffa3a3;
 
-  --color--divider: rgba(255,255,255,0.16);
+  --color--divider: rgba(255, 255, 255, 0.16);
 
   --border--radius: 16px;
 
-  --size__nav__item--squared: 120px;
+  --size__nav--width--desktop: 280px;
+  --size__nav--width--short: 120px;
+  --size__nav--height--mobile: 64px;
+
+  --size__nav__item--squared: var(--size__nav--width--short);
 }
 
 *,
