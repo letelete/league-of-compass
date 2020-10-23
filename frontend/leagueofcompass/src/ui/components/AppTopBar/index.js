@@ -1,20 +1,19 @@
 import React from 'react';
 import TopBar from '../TopBar';
-import UserLink from '../AppNavbar/UserLink';
-import UserLinkImage from '../AppNavbar/UserLink/UserLinkImage';
-import UserLinkLabel from '../AppNavbar/UserLink/UserLinkLabel';
+import UserLink from '../UserLink';
+import UserLinkImage from '../UserLink/UserLinkImage';
+import UserLinkLabel from '../UserLink/UserLinkLabel';
+import UserLinkProvider from '../UserLink/UserLinkProvider';
 
 const AppTopBar = () => {
   return (
     <TopBar>
-      <UserLink>
-        {({ image, firstName }) => (
-          <>
-            <UserLinkLabel label={firstName} />
-            <UserLinkImage src={image} />
-          </>
-        )}
-      </UserLink>
+      <UserLinkProvider>
+        <UserLink>
+          <UserLinkLabel />
+          <UserLinkImage />
+        </UserLink>
+      </UserLinkProvider>
     </TopBar>
   );
 };

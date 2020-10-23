@@ -18,9 +18,10 @@ import NavBar from '../NavBar';
 import NavItem from '../NavBar/NavItem';
 import PATHS from '../../../config/paths';
 import React from 'react';
-import UserLink from './UserLink';
-import UserLinkImage from './UserLink/UserLinkImage';
-import UserLinkLabel from './UserLink/UserLinkLabel';
+import UserLink from '../UserLink';
+import UserLinkImage from '../UserLink/UserLinkImage';
+import UserLinkLabel from '../UserLink/UserLinkLabel';
+import UserLinkProvider from '../UserLink/UserLinkProvider';
 
 const AppNavbar = () => {
   const isLargeScreen = useLargeScreenMediaQuery();
@@ -30,14 +31,13 @@ const AppNavbar = () => {
     <NavBar>
       {!isMobileScreen && (
         <section className="nav__section nav__section--user">
-          <UserLink>
-            {({ image, firstName }) => (
-              <>
-                <UserLinkImage src={image} />
-                {isLargeScreen && <UserLinkLabel label={firstName} />}
-              </>
-            )}
-          </UserLink>
+          <UserLinkProvider>
+            <UserLink>
+              <UserLinkImage />
+              {isLargeScreen && <UserLinkLabel />}
+            </UserLink>
+          </UserLinkProvider>
+
           <HorizontalDivider />
         </section>
       )}
