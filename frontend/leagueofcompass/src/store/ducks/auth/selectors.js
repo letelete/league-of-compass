@@ -1,11 +1,15 @@
 import { actions } from './index';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectors as errorSelectors } from '../errors';
 import { selectors as loadingSelectors } from '../loadings';
 
-export const getAuthenticationCounters = (state) => {
-  const actionType = actions.authenticated.type;
-  return {
-    error: errorSelectors.hasErrorForAction(actionType)(state),
-    loading: loadingSelectors.hasLoadingForAction(actionType)(state),
-  };
-};
+export const getAuthenticationCounters = createSelector(
+  errorSelectors.hasErrorForAction(actions.authenticated.type),
+  loadingSelectors.hasLoadingForAction(actions.authenticated.type),
+  (error, loading) => ({ error, loading })
+);
+
+export const isUserAuthenticated = createSelector(
+  (state) => state.auth.user,
+  (user) => user !== null
+);

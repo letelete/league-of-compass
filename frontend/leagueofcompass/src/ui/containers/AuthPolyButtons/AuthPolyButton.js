@@ -3,9 +3,14 @@ import PolyButton from '../../components/PolyButton';
 import React from 'react';
 import { selectors } from '../../../store/ducks/auth';
 import { useSelector } from 'react-redux';
+import { selectors as userSelectors } from '../../../store/ducks/auth';
 
 const AuthPolyButton = ({ defaultLabel, onAuthClick }) => {
-  const authUser = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector(userSelectors.isUserAuthenticated);
+  const userName = useSelector((state) => {
+    const { user } = state.auth;
+    return user && user.personal.name;
+  });
   const { loading, error } = useSelector(selectors.getAuthenticationCounters);
 
   const handleOnAuthClick = () => {
@@ -21,9 +26,9 @@ const AuthPolyButton = ({ defaultLabel, onAuthClick }) => {
       };
     } else if (loading) {
       return { polyState: POLY_STATES.LOADING };
-    } else if (authUser) {
+    } else if (isAuthenticated) {
       return {
-        label: `Hello, ${authUser.personal.name}`,
+        label: `Hello, ${userName}`,
         polyState: POLY_STATES.SUCCESS,
       };
     }

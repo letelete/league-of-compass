@@ -1,4 +1,6 @@
+import AppContent from '../components/AppContent';
 import AppGrid from '../components/AppGrid';
+import AppNavbar from '../components/AppNavbar';
 import GameBackground from '../components/GameBackground';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -8,7 +10,7 @@ const App = () => {
     <main className="app">
       <Router>
         <GameBackground>
-          <AppGrid />
+          <AppGrid navigation={<AppNavbar />} content={<AppContent />} />
         </GameBackground>
       </Router>
     </main>

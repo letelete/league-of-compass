@@ -4,7 +4,7 @@ import PATHS from '../../../../../config/paths';
 import React from 'react';
 import srcPlaceholder from '../../../../../assets/images/placeholders/user_image.jpg';
 
-const UserLinkImage = ({ src, alt }) => {
+const UserLinkImage = ({ src }) => {
   return (
     <div className="user-link__image">
       <NavLink

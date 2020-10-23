@@ -12,6 +12,7 @@ import {
   useMobileMediaQuery,
 } from '../../hooks/useMediaQuery';
 
+import AuthBasedComponent from '../../containers/AuthBasedComponent';
 import HorizontalDivider from '../Dividers/HorizontalDivider';
 import NavBar from '../NavBar';
 import NavItem from '../NavBar/NavItem';
@@ -20,10 +21,8 @@ import React from 'react';
 import UserLink from './UserLink';
 import UserLinkImage from './UserLink/UserLinkImage';
 import UserLinkLabel from './UserLink/UserLinkLabel';
-import { useSelector } from 'react-redux';
 
 const AppNavbar = () => {
-  const user = useSelector((state) => state.auth.user);
   const isLargeScreen = useLargeScreenMediaQuery();
   const isMobileScreen = useMobileMediaQuery();
 
@@ -32,9 +31,11 @@ const AppNavbar = () => {
       {!isMobileScreen && (
         <section className="nav__section nav__section--user">
           <UserLink>
-            <UserLinkImage src={user && user.personal.image} />
-            {isLargeScreen && (
-              <UserLinkLabel userName={user && user.personal.name} />
+            {({ image, firstName }) => (
+              <>
+                <UserLinkImage src={image} />
+                {isLargeScreen && <UserLinkLabel label={firstName} />}
+              </>
             )}
           </UserLink>
           <HorizontalDivider />
@@ -59,15 +60,23 @@ const AppNavbar = () => {
       </section>
       {!isMobileScreen && (
         <section className="nav__section nav__section--bottom">
-          {user ? (
-            <NavItem
-              Icon={<LogoutIcon />}
-              label={'Logout'}
-              path={PATHS.LOGOUT}
-            />
-          ) : (
-            <NavItem Icon={<LoginIcon />} label={'Login'} path={PATHS.AUTH} />
-          )}
+          <AuthBasedComponent>
+            {({ isAuthenticated }) =>
+              isAuthenticated ? (
+                <NavItem
+                  Icon={<LogoutIcon />}
+                  label={'Logout'}
+                  path={PATHS.LOGOUT}
+                />
+              ) : (
+                <NavItem
+                  Icon={<LoginIcon />}
+                  label={'Login'}
+                  path={PATHS.AUTH}
+                />
+              )
+            }
+          </AuthBasedComponent>
         </section>
       )}
     </NavBar>
