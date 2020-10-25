@@ -12,6 +12,8 @@
 }
 
 .app__content {
+  display: flex;
+  flex-flow: column;
   grid-area: content;
 }
 

@@ -41,7 +41,7 @@ const createErrorBlockFromError = (error) => {
  * @param {string} onSucceed A required action type that is dispatched after successful API transaction. Its type name is mandatory to identify a certain action across the app.
  * @param {string} [onFailed=null] An optional action type that is dispatched after unsuccessful API transaction.
  */
-const apiMiddleware = ({ dispatch, getState }) => (next) => (action) => {
+const apiMiddleware = ({ dispatch, getState }) => (next) => async (action) => {
   if (action.type !== apiActions.apiCallBegan.type) return next(action);
 
   const { data, headers, method, url, onSucceed, onFailed } = action.payload;

@@ -1,0 +1,5 @@
+.compass__item {
+  display: inline-block;
+  position: absolute;
+  will-change: auto;
+}

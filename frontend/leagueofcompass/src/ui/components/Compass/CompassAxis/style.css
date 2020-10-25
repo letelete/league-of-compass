@@ -1,0 +1,15 @@
+.compass__axis {
+  --compass__axis--thickness: 1px;
+  background-color: var(--color--divider);
+  height: var(--compass__axis--thickness);
+  position: absolute;
+  width: var(--compass__axis--thickness);
+}
+
+.compass__axis--vertical {
+  height: 100%;
+}
+
+.compass__axis--horizontal {
+  width: 100%;
+}

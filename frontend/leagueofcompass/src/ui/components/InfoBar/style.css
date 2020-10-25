@@ -1,0 +1,21 @@
+.info-bar {
+  align-items: center;
+  background-color: var(--color__background__blur--tools);
+  border-radius: 0 0 var(--border--radius) var(--border--radius);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  line-height: 1.75;
+  max-width: 600px;
+  padding: 2em 1rem;
+  transition: width 0.5s ease-out;
+  width: 80%;
+}
+
+.info-bar--mobile {
+  align-items: flex-start;
+  border-radius: 0;
+  justify-content: flex-start;
+  padding: 1.5em 1rem;
+  width: 100%;
+}

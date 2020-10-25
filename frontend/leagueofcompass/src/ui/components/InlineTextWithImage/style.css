@@ -1,0 +1,10 @@
+.inline-text-with-image {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1em;
+  gap: 0.5em;
+}
+
+.inline-text-with-image__image-wrapper {
+  font-size: 1.5em;
+}

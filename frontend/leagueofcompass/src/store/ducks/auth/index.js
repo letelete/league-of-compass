@@ -1,8 +1,8 @@
-import * as selectors from './selectors';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import API from '../../../config/api';
 import { apiCallBegan } from '../../actions/api';
-import { createSlice } from '@reduxjs/toolkit';
+import getCountersForActionType from '../../selectors/counters';
 import qs from 'qs';
 
 const initialState = {
@@ -43,7 +43,15 @@ const thunks = {
   },
 };
 
-export { selectors };
+export const selectors = {
+  getAuthenticationCounters: getCountersForActionType(
+    slice.actions.authenticated.type
+  ),
+  isUserAuthenticated: createSelector(
+    (state) => state.auth.user,
+    (user) => user !== null
+  ),
+};
 
 export const actions = {
   ...slice.actions,

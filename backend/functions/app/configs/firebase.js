@@ -9,6 +9,8 @@ initializeApp();
 
 const Database = Admin.firestore();
 
+const Storage = Admin.storage();
+
 const FieldValue = Admin.firestore.FieldValue;
 
-module.exports = { Database, FieldValue };
+module.exports = { Database, Storage, FieldValue };

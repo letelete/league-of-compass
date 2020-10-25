@@ -1,6 +1,4 @@
-import * as selectors from './selectors';
-
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   registeredActions: {},
@@ -22,7 +20,13 @@ const slice = createSlice({
   },
 });
 
-export { selectors };
+export const selectors = {
+  hasErrorForAction: (actionType) =>
+    createSelector(
+      (state) => state.errors,
+      (errors) => errors.registeredActions[actionType]
+    ),
+};
 
 export const actions = {
   ...slice.actions,

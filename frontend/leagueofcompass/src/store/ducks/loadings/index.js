@@ -1,6 +1,4 @@
-import * as selectors from './selectors';
-
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   registeredActions: {},
@@ -19,7 +17,13 @@ const slice = createSlice({
   },
 });
 
-export { selectors };
+export const selectors = {
+  hasLoadingForAction: (actionType) =>
+    createSelector(
+      (state) => state.loadings,
+      (loadings) => loadings.registeredActions[actionType]
+    ),
+};
 
 export const actions = {
   ...slice.actions,
