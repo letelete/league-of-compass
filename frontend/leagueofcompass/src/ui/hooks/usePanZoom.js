@@ -1,14 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import panzoom from 'panzoom';
 
 const usePanZoom = () => {
   const ref = useRef(null);
+  const [instance, setInstance] = useState(null);
 
   useEffect(() => {
-    ref.current = panzoom(ref.current);
+    setInstance(panzoom(ref.current));
     return () => {
-      if (ref) ref.current.dispose();
+      if (instance) instance.dispose();
     };
   }, [ref]);
 

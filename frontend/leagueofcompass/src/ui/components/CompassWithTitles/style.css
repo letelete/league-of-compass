@@ -1,0 +1,40 @@
+.titled-compass {
+  display: grid;
+  gap: 1em;
+  grid-template-areas:
+    '. top .'
+    'left content right'
+    '. bottom .';
+  grid-template-columns: min-content 1fr min-content;
+  grid-template-rows: min-content 1fr min-content;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.compass__title {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.compass__title--left {
+  grid-area: left;
+  transform: rotate(-90deg);
+}
+
+.compass__title--top {
+  grid-area: top;
+}
+
+.compass__title--right {
+  grid-area: right;
+  transform: rotate(90deg);
+}
+
+.compass__title--bottom {
+  grid-area: bottom;
+}
+
+.titled-compass__content {
+  grid-area: content;
+}

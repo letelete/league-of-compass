@@ -1,37 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
-import ChampionCompassItem from './ChampionCompassItem';
+import ChampionsCompassItem from './ChampionsCompassItem';
+import ChampionsCompassTitle from './ChampionsCompassTitle';
 import Compass from '../../components/Compass';
+import CompassAxisesCross from '../Compass/CompassAxisesCross';
+import CompassItems from '../Compass/CompassItems';
+import CompassWithTitles from '../CompassWithTitles';
 import sleep from '../../../helpers/sleep';
 import usePanZoom from '../../hooks/usePanZoom';
 
 const ChampionsCompass = ({ champions }) => {
   const panZoomRef = usePanZoom();
-  const [items, setItems] = useState(() => []);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const sortedChamps = champions
-        .sort((a, b) => {
-          const distanceFromCenter = ({ x, y }) => {
-            const centerPercentage = 50;
-            return Math.hypot(x - centerPercentage, y - centerPercentage);
-          };
-          return distanceFromCenter(a) < distanceFromCenter(b) ? -1 : 1;
-        })
-        .map((champ) => (
-          <ChampionCompassItem
-            key={champ.name}
-            x={champ.x}
-            y={champ.y}
-            image={`https://www.mobafire.com/images/avatars/${champ.name}-classic.png`}
-          />
-        ));
+    let hasView = true;
+
+    const sortedChamps = champions.sort((a, b) => {
+      const distanceFromCenter = ({ x, y }) => {
+        const centerPercentage = 50;
+        return Math.hypot(x - centerPercentage, y - centerPercentage);
+      };
+      return distanceFromCenter(a) < distanceFromCenter(b) ? -1 : 1;
+    });
+
+    const displayChampionsAsync = async () => {
       for (const champ of sortedChamps) {
-        setItems((items) => [...items, champ]);
-        await sleep(0);
+        await sleep(0).then(() => {
+          if (!hasView) return;
+          setItems((items) => [
+            ...items,
+            <ChampionsCompassItem key={champ.name} {...champ} />,
+          ]);
+        });
       }
-    })();
+    };
+
+    displayChampionsAsync();
+
+    return () => {
+      hasView = false;
+    };
   }, [champions]);
 
   return (
@@ -57,14 +66,17 @@ const ChampionsCompass = ({ champions }) => {
           transition: 'transform 0.15s ease-out',
         }}
       >
-        <Compass
-          labelLeft={<div>Boring</div>}
-          labelTop={<div>Difficult mechanics</div>}
-          labelRight={<div>Interesting</div>}
-          labelBottom={<div>No mechanics</div>}
+        <CompassWithTitles
+          left={<ChampionsCompassTitle label={'Boring'} />}
+          top={<ChampionsCompassTitle label={'Difficult'} />}
+          right={<ChampionsCompassTitle label={'Interesting'} />}
+          bottom={<ChampionsCompassTitle label={'Easy'} />}
         >
-          {items}
-        </Compass>
+          <Compass>
+            <CompassAxisesCross />
+            <CompassItems items={items} />
+          </Compass>
+        </CompassWithTitles>
       </div>
     </div>
   );

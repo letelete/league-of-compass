@@ -1,28 +1,15 @@
 .compass__axis {
   --compass__axis--thickness: 1px;
-  display: flex;
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  align-items: center;
-  z-index: 0;
-}
-
-.compass__axis__line {
   background-color: var(--color--divider);
-}
-
-.compass__axis--vertical {
-  flex-flow: column;
-}
-
-.compass__axis--vertical .compass__axis__line {
-  height: 100%;
+  height: var(--compass__axis--thickness);
+  position: absolute;
   width: var(--compass__axis--thickness);
 }
 
+.compass__axis--vertical {
+  height: 100%;
+}
 
-.compass__axis--horizontal .compass__axis__line {
-  height: var(--compass__axis--thickness);
+.compass__axis--horizontal {
   width: 100%;
 }

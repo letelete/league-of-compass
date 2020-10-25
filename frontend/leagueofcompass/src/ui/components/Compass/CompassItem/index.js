@@ -1,14 +1,13 @@
 import './style.css';
 
-import { animated, config, interpolate, useSpring } from 'react-spring';
+import { animated, config, useSpring } from 'react-spring';
 
 import React from 'react';
 
 const CompassItem = ({ children, x, y }) => {
-  const { o, left, top } = useSpring({
+  const { o, top } = useSpring({
     config: config.gentle,
-    from: { o: 0, left: 50, top: 50 },
-    left: x,
+    from: { o: 0, top: 50 },
     top: y,
     o: 1,
   });
@@ -26,7 +25,7 @@ const CompassItem = ({ children, x, y }) => {
             range: [0, 0.25, 1],
             output: [0, 1.25, 1],
           })
-          .interpolate((o) => `scale(${o})`),
+          .interpolate((o) => `scale(${o}) translate(-50%, -50%)`),
         top: top.interpolate((top) => `${top}%`),
         left: `${x}%`,
       }}

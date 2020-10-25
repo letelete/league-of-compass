@@ -1,0 +1,3 @@
+.champions-compass__item__avatar {
+  font-size: calc(var(--font__size--normal) * 2);
+}
