@@ -1,0 +1,21 @@
+.zoomable {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.zoomable__ref-holder {
+  height: 100%;
+  position: absolute;
+  transition: transform 0.15s ease-out;
+  width: 100%;
+}
+
+.zoomable,
+.zoomable__ref-holder {
+  outline: none;
+}

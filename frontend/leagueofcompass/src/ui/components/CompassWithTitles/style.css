@@ -8,18 +8,17 @@
   grid-template-columns: min-content 1fr min-content;
   grid-template-rows: min-content 1fr min-content;
   height: 100%;
-  position: relative;
   width: 100%;
 }
 
 .compass__title {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  place-self: center;
 }
+
 .compass__title--left {
   grid-area: left;
-  transform: rotate(-90deg);
+  transform: scale(-1);
+  writing-mode: vertical-rl;
 }
 
 .compass__title--top {
@@ -28,7 +27,7 @@
 
 .compass__title--right {
   grid-area: right;
-  transform: rotate(90deg);
+  writing-mode: vertical-rl;
 }
 
 .compass__title--bottom {
