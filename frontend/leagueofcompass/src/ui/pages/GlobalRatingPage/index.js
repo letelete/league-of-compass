@@ -1,9 +1,9 @@
 import ChampionsCompass from '../../components/ChampionsCompass';
 import Page from '../Page';
 import React from 'react';
-import champions from './champions';
 
 const GlobalRatingPage = () => {
+  const champions = [];
   const sortedChampions = champions.sort((a, b) => {
     const distanceFromCenter = ({ x, y }) => {
       const centerPercentage = 50;
