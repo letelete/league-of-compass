@@ -1,20 +1,32 @@
+import React, { useEffect } from 'react';
+import {
+  actions,
+  selectors as ratingsSelectors,
+} from '../../../store/ducks/ratings';
+import { useDispatch, useSelector } from 'react-redux';
+
 import ChampionsCompass from '../../components/ChampionsCompass';
+import CircularLabeledLoadingIndicator from '../../components/LoadingIndicators/CircularLabeledLoadingIndicator';
+import CircularLoadingIndicator from '../../components/LoadingIndicators/CircularLoadingIndicator';
 import Page from '../Page';
-import React from 'react';
+
+const { getAllRatings, getAllRatingsCounters } = ratingsSelectors;
 
 const GlobalRatingPage = () => {
-  const champions = [];
-  const sortedChampions = champions.sort((a, b) => {
-    const distanceFromCenter = ({ x, y }) => {
-      const centerPercentage = 50;
-      return Math.hypot(x - centerPercentage, y - centerPercentage);
-    };
-    return distanceFromCenter(a) < distanceFromCenter(b) ? -1 : 1;
-  });
+  const dispatch = useDispatch();
+
+  const ratings = useSelector(getAllRatings);
+  const allRatingsCounters = useSelector(getAllRatingsCounters);
+
+  useEffect(() => {
+    if (!ratings.length) {
+      dispatch(actions.fetchAllRatings());
+    }
+  }, []);
 
   return (
     <Page className="page--global-rating">
-      <ChampionsCompass champions={sortedChampions} />
+      <ChampionsCompass ratings={ratings} />
     </Page>
   );
 };

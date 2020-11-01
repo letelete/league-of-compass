@@ -7,5 +7,9 @@ export default {
     AUTH: {
       GOOGLE: '/auth/google',
     },
+    RATINGS: {
+      ALL: '/ratings',
+      SPECIFIC: (championId) => `/ratings/${championId}`,
+    },
   },
 };

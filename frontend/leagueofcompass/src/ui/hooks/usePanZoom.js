@@ -7,19 +7,17 @@ const usePanZoom = ({ config, onInit } = {}) => {
   const [instance, setInstance] = useState(null);
 
   useEffect(() => {
-    if (!instance) {
-      const panZoomInstance = panzoom(ref.current, { ...config });
-      setInstance(panZoomInstance);
-      if (onInit) onInit(panZoomInstance);
-    }
+    const panZoomInstance = panzoom(ref.current, { ...config });
+    setInstance(panZoomInstance);
+    if (onInit) onInit(panZoomInstance);
     return () => {
       if (instance) {
         instance.dispose();
       }
     };
-  }, [instance]);
+  }, []);
 
-  return [ref, instance];
+  return ref;
 };
 
 export default usePanZoom;

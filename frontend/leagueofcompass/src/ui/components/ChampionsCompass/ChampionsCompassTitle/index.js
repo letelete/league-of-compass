@@ -1,6 +1,5 @@
 import './style.css';
 
-import CircularImage from '../../CircularImage';
 import React from 'react';
 
 const ChampionsCompassTitle = ({ label }) => {

@@ -10,9 +10,9 @@ import Zoomable from '../Zoomable';
 import sleep from '../../../helpers/sleep';
 import usePanZoom from '../../hooks/usePanZoom';
 
-const ChampionsCompass = ({ champions }) => {
+const ChampionsCompass = ({ ratings }) => {
   const [items, setItems] = useState([]);
-  const [panZoomRef, panZoomInstance] = usePanZoom({
+  const panZoomRef = usePanZoom({
     config: {
       maxZoom: 10,
       minZoom: 0.5,
@@ -22,13 +22,15 @@ const ChampionsCompass = ({ champions }) => {
   useEffect(() => {
     let hasView = true;
 
+    console.log('ratings', ratings.length);
+
     const displayChampionsAsync = async () => {
-      for (const champion of champions) {
+      for (const entry of ratings) {
         await sleep(0).then(() => {
           if (!hasView) return;
           setItems((items) => [
             ...items,
-            <ChampionsCompassItem key={champion.name} {...champion} />,
+            <ChampionsCompassItem key={entry.champion.id} {...entry} />,
           ]);
         });
       }
@@ -39,7 +41,7 @@ const ChampionsCompass = ({ champions }) => {
     return () => {
       hasView = false;
     };
-  }, [champions]);
+  }, [ratings]);
 
   return (
     <Zoomable panZoomRef={panZoomRef}>
