@@ -1,7 +1,7 @@
 .inline-dropdown__menu__item {
   position: relative;
   cursor: pointer;
-  padding: 0.25em 1rem;
+  padding: 0.75em 1rem;
 }
 
 .inline-dropdown__menu__item--selected {

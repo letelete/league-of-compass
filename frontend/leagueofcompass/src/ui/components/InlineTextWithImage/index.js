@@ -9,7 +9,7 @@ const InlineTextWithImage = ({ src, alt, label }) => {
       <div className="inline-text-with-image__image-wrapper">
         <CircularImage src={src} alt={alt} />
       </div>
-      <p>{label}</p>
+      <span>{label}</span>
     </div>
   );
 };

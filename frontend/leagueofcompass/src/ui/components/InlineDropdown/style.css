@@ -2,7 +2,6 @@
   display: inline-block;
   font-size: inherit;
   font-weight: inherit;
-  margin: 0 1rem;
   position: relative;
 }
 
@@ -16,18 +15,10 @@
   display: inline-flex;
   flex-flow: row;
   gap: 0.25em;
+  margin: 0.2em 0.5em;
+  padding: 0.25em;
   position: relative;
-}
-
-.inline-dropdown__selected::after {
-  border: none;
-  border-top: 0.25em dotted var(--color__text--primary);
-  content: '';
-  height: 1px;
-  left: -0.5rem;
-  position: absolute;
-  top: calc(99%);
-  width: calc(100% + 1rem);
+  border-bottom: 0.15em dotted var(--color__text--primary);
 }
 
 .inline-dropdown__menu {
