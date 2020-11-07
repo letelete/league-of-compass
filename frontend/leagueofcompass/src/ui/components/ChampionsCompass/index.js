@@ -16,6 +16,9 @@ const ChampionsCompass = ({ ratings }) => {
     config: {
       maxZoom: 10,
       minZoom: 0.5,
+      initialX: window.innerWidth / 2,
+      initialY: window.innerHeight / 2,
+      initialZoom: 0.9,
     },
   });
 

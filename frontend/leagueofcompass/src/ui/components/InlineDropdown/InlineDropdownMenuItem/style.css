@@ -1,0 +1,24 @@
+.inline-dropdown__menu__item {
+  position: relative;
+  cursor: pointer;
+  padding: 0.25em 1rem;
+}
+
+.inline-dropdown__menu__item--selected {
+  background-color: var(--color__button--hover);
+}
+
+.inline-dropdown__menu__item::before {
+  background-color: var(--color__button--hover);
+  content: '';
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+}
+
+.inline-dropdown__menu__item:hover::before {
+  opacity: 1;
+}

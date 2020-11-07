@@ -1,0 +1,9 @@
+.info-bar {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  padding: 1.25em 1rem;
+  width: 100%;
+  background-color: var(--color__background__blur--tools);
+}

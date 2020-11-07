@@ -1,0 +1,4 @@
+.page--global-rating {
+  flex-flow: column;
+  align-items: flex-end;
+}

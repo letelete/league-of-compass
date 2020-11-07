@@ -10,8 +10,8 @@ const initialState = {
   all: {},
   fetchedAt: null,
   config: {
-    region: 'global',
-    tier: 'global',
+    region: 'KR',
+    tier: 'Grandmaster',
   },
 };
 
@@ -19,6 +19,12 @@ const slice = createSlice({
   name: 'ratings',
   initialState,
   reducers: {
+    regionChanged: (state, { payload: { region } }) => {
+      state.config.region = region;
+    },
+    tierChanged: (state, { payload: { tier } }) => {
+      state.config.tier = tier;
+    },
     fetchedAllRatings: (state, { payload }) => {
       const fetchDate = new Date().toISOString();
       state.fetchedAt = fetchDate;
@@ -61,6 +67,14 @@ export const selectors = {
         getX: (entry) => entry.rating.ratings.excitement,
         getY: (entry) => entry.rating.ratings.difficulty,
       })
+  ),
+  getVotesCount: createSelector(
+    (state) => state.ratings.all,
+    (ratings) =>
+      Object.values(ratings).reduce(
+        (countsSum, entry) => countsSum + entry.rating.count,
+        0
+      )
   ),
 };
 
