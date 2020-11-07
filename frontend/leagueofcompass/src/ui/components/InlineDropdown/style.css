@@ -11,6 +11,7 @@
 
 .inline-dropdown__selected {
   align-items: center;
+  border-bottom: 0.15em dotted var(--color__text--primary);
   cursor: pointer;
   display: inline-flex;
   flex-flow: row;
@@ -18,7 +19,6 @@
   margin: 0.2em 0.5em;
   padding: 0.25em;
   position: relative;
-  border-bottom: 0.15em dotted var(--color__text--primary);
 }
 
 .inline-dropdown__menu {
