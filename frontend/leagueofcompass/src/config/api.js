@@ -11,5 +11,7 @@ export default {
       ALL: '/ratings',
       SPECIFIC: (championId) => `/ratings/${championId}`,
     },
+    REGIONS: '/game-data/regions',
+    TIERS: '/game-data/tiers',
   },
 };

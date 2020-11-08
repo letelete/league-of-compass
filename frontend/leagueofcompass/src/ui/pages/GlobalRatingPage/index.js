@@ -30,12 +30,13 @@ const GlobalRatingPage = () => {
   const dispatch = useDispatch();
 
   const ratings = useSelector(getAllRatings);
+  const { region: selectedRegion, tier: selectedTier } = useSelector(
+    (state) => state.ratings.config
+  );
 
   useEffect(() => {
-    if (!ratings.length) {
-      dispatch(actions.fetchAllRatings());
-    }
-  }, []);
+    dispatch(actions.fetchAllRatings());
+  }, [selectedRegion, selectedTier]);
 
   return (
     <Page className="page--global-rating">

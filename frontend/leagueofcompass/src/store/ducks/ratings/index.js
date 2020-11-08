@@ -10,8 +10,8 @@ const initialState = {
   all: {},
   fetchedAt: null,
   config: {
-    region: 'KR',
-    tier: 'Grandmaster',
+    region: 'global',
+    tier: 'global',
   },
 };
 

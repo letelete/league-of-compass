@@ -3,6 +3,14 @@ import {
   actions as ratingsActions,
   selectors as ratingsSelectors,
 } from '../../store/ducks/ratings';
+import {
+  actions as regionsActions,
+  selectors as regionsSelectors,
+} from '../../store/ducks/regions';
+import {
+  actions as tiersActions,
+  selectors as tiersSelectors,
+} from '../../store/ducks/tiers';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CircularImage from '../components/CircularImage';
@@ -22,112 +30,6 @@ const {
   getVotesCount,
 } = ratingsSelectors;
 
-// TODO: remove hardcoded data
-const tiers = [
-  {
-    region: 'Iron',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/9/95/Season_2019_-_Iron_3.png/revision/latest/scale-to-width-down/130?cb=20181229234927',
-  },
-  {
-    region: 'Bronze',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/leagueofcompass.appspot.com/o/assets%2Fgame%2Ftiers%2Fbronze.png?alt=media&token=fee09988-364e-4e90-8279-faf6ddcdfc85',
-  },
-  {
-    region: 'Silver',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/7/70/Season_2019_-_Silver_1.png/revision/latest/scale-to-width-down/130?cb=20181229234936',
-  },
-  {
-    region: 'Gold',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/9/96/Season_2019_-_Gold_1.png/revision/latest/scale-to-width-down/130?cb=20181229234920',
-  },
-  {
-    region: 'Platinum',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/7/74/Season_2019_-_Platinum_1.png/revision/latest/scale-to-width-down/130?cb=20181229234932',
-  },
-  {
-    region: 'Diamond',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/9/91/Season_2019_-_Diamond_1.png/revision/latest/scale-to-width-down/130?cb=20181229234917',
-  },
-  {
-    region: 'Master',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/1/11/Season_2019_-_Master_1.png/revision/latest/scale-to-width-down/130?cb=20181229234929',
-  },
-  {
-    region: 'Grandmaster',
-    image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/7/76/Season_2019_-_Grandmaster_1.png/revision/latest/scale-to-width-down/130?cb=20181229234923',
-  },
-  {
-    region: 'Challenger',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/leagueofcompass.appspot.com/o/assets%2Fgame%2Ftiers%2Fchallenger.png?alt=media&token=80ac64c1-92d4-473a-aaf8-94fd2dd8026a',
-  },
-];
-const regions = [
-  {
-    region: 'BR',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'EUNE',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'EUW',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'LAN',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'LAS',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'NA',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'OCE',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'RU',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'TR',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'JP',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-  {
-    region: 'KR',
-    image:
-      'https://www.unrankedsmurfs.com/storage/blogposts/lol-servers/EUW.jpg',
-  },
-];
-
 const GlobalRatingInfoBar = () => {
   const dispatch = useDispatch();
 
@@ -137,6 +39,12 @@ const GlobalRatingInfoBar = () => {
   const ratings = useSelector(getAllRatings);
   const votesCount = useSelector(getVotesCount);
 
+  const regions = useSelector((state) => state.regions.all);
+  const regionsCounters = useSelector(regionsSelectors.getRegionsCounters);
+
+  const tiers = useSelector((state) => state.tiers.all);
+  const tiersCounters = useSelector(tiersSelectors.getTiersCounters);
+
   const handleRegionChange = (region) => {
     dispatch(ratingsActions.regionChanged({ region }));
   };
@@ -144,6 +52,11 @@ const GlobalRatingInfoBar = () => {
   const handleTierChange = (tier) => {
     dispatch(ratingsActions.tierChanged({ tier }));
   };
+
+  useState(() => {
+    if (!regions.length) dispatch(regionsActions.fetchRegions());
+    if (!tiers.length) dispatch(tiersActions.fetchTiers());
+  });
 
   return (
     <InfoBar
@@ -165,43 +78,47 @@ const GlobalRatingInfoBar = () => {
           'No votes were submitted yet'
         )}
       </PartialEmphasis>
-      <PartialEmphasis>
-        {'by '}
-        <InlineDropdown
-          selectedId={selectedRegion}
-          onSelected={handleRegionChange}
-          items={regions.map((region) =>
-            makeInlineDropdownItem({
-              id: region.region,
-              view: (
-                <InlineTextWithImage
-                  label={region.region}
-                  src={region.image}
-                  alt={'Region image'}
-                />
-              ),
-            })
-          )}
-        />
-        {'players with '}
-        <InlineDropdown
-          selectedId={selectedTier}
-          onSelected={handleTierChange}
-          items={tiers.map((region) =>
-            makeInlineDropdownItem({
-              id: region.region,
-              view: (
-                <InlineTextWithImage
-                  label={region.region}
-                  src={region.image}
-                  alt={'Tier image'}
-                />
-              ),
-            })
-          )}
-        />
-        {'tiers'}
-      </PartialEmphasis>
+      {regions.length && tiers.length ? (
+        <PartialEmphasis>
+          {'by '}
+          <InlineDropdown
+            selectedId={selectedRegion}
+            onSelected={handleRegionChange}
+            items={regions.map((region) =>
+              makeInlineDropdownItem({
+                id: region.id,
+                view: (
+                  <InlineTextWithImage
+                    label={region.abbrv}
+                    src={region.image}
+                    alt={region.name}
+                  />
+                ),
+              })
+            )}
+          />
+          {'players with '}
+          <InlineDropdown
+            selectedId={selectedTier}
+            onSelected={handleTierChange}
+            items={tiers.map((tier) =>
+              makeInlineDropdownItem({
+                id: tier.id,
+                view: (
+                  <InlineTextWithImage
+                    label={tier.name}
+                    src={tier.image}
+                    alt={`${tier.name} tier avatar`}
+                  />
+                ),
+              })
+            )}
+          />
+          {'tiers'}
+        </PartialEmphasis>
+      ) : (
+        <CircularLoadingIndicator />
+      )}
     </InfoBar>
   );
 };

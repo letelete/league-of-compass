@@ -25,9 +25,8 @@ const ChampionsCompass = ({ ratings }) => {
   useEffect(() => {
     let hasView = true;
 
-    console.log('ratings', ratings.length);
-
     const displayChampionsAsync = async () => {
+      if (!ratings.length) setItems([]);
       for (const entry of ratings) {
         await sleep(0).then(() => {
           if (!hasView) return;
