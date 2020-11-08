@@ -32,7 +32,7 @@ const tiers = [
   {
     region: 'Bronze',
     image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/f/f4/Season_2019_-_Bronze_1.png/revision/latest/scale-to-width-down/130?cb=20181229234910',
+      'https://firebasestorage.googleapis.com/v0/b/leagueofcompass.appspot.com/o/assets%2Fgame%2Ftiers%2Fbronze.png?alt=media&token=fee09988-364e-4e90-8279-faf6ddcdfc85',
   },
   {
     region: 'Silver',
@@ -67,7 +67,7 @@ const tiers = [
   {
     region: 'Challenger',
     image:
-      'https://static.wikia.nocookie.net/leagueoflegends/images/5/5f/Season_2019_-_Challenger_1.png/revision/latest/scale-to-width-down/130?cb=20181229234913',
+      'https://firebasestorage.googleapis.com/v0/b/leagueofcompass.appspot.com/o/assets%2Fgame%2Ftiers%2Fchallenger.png?alt=media&token=80ac64c1-92d4-473a-aaf8-94fd2dd8026a',
   },
 ];
 const regions = [
