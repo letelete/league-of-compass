@@ -2,6 +2,7 @@
   display: inline-block;
   font-size: inherit;
   font-weight: inherit;
+  margin-right: 0.5rem;
   position: relative;
 }
 
@@ -11,14 +12,20 @@
 
 .inline-dropdown__selected {
   align-items: center;
-  border-bottom: 0.15em dotted var(--color__text--primary);
   cursor: pointer;
   display: inline-flex;
   flex-flow: row;
-  gap: 0.25em;
-  margin: 0.2em 0.5em;
-  padding: 0.25em;
+  justify-content: center;
+  padding: 0.33em 0.25em;
   position: relative;
+}
+
+.inline-dropdown__selected::after {
+  border-bottom: 0.1em dotted var(--color__text--secondary);
+  bottom: 0;
+  content: '';
+  position: absolute;
+  width: 100%;
 }
 
 .inline-dropdown__menu {
@@ -27,6 +34,7 @@
   border-radius: calc(var(--border--radius) / 4) calc(var(--border--radius) / 4)
     var(--border--radius) var(--border--radius);
   left: -1rem;
+  min-width: calc(100% + 2rem);
   overflow: hidden;
   position: absolute;
   top: 100%;

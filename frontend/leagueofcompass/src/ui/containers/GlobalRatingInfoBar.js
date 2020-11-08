@@ -146,7 +146,11 @@ const GlobalRatingInfoBar = () => {
   };
 
   return (
-    <InfoBar>
+    <InfoBar
+      style={{
+        lineHeight: '1.5',
+      }}
+    >
       <PartialEmphasis>
         {votesCount ? (
           <>
@@ -179,7 +183,7 @@ const GlobalRatingInfoBar = () => {
             })
           )}
         />
-        {'players with'}
+        {'players with '}
         <InlineDropdown
           selectedId={selectedTier}
           onSelected={handleTierChange}
