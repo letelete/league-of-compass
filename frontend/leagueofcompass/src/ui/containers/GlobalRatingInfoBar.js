@@ -65,18 +65,10 @@ const GlobalRatingInfoBar = () => {
       }}
     >
       <PartialEmphasis>
-        {votesCount ? (
-          <>
-            <EmphasizedText text={votesCount} />
-            {` vote${votesCount.length !== 1 ? 's' : ''} for `}
-            <EmphasizedText text={ratings.length} />
-            {` unique champion${
-              votesCount.length !== 1 ? 's' : ''
-            } were submitted`}
-          </>
-        ) : (
-          'No votes were submitted yet'
-        )}
+        <EmphasizedText text={votesCount} />
+        {` vote${votesCount.length !== 1 ? 's' : ''} for `}
+        <EmphasizedText text={ratings.length} />
+        {` unique champion${votesCount.length !== 1 ? 's' : ''} were submitted`}
       </PartialEmphasis>
       {regions.length && tiers.length ? (
         <PartialEmphasis>
